@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "Simple Relational SQL Server for Fresto hard disk inventory",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "node run",
+    "start": "node index.js",
+    "build": "node ./database/db.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
