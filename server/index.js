@@ -1,12 +1,15 @@
 import express from 'express';
-import { Movie, Harddisk, Rental } from './database/db';
+import { Movie, Harddisk, Rental } from './database/db.js';
 import { Op } from 'sequelize';
+import cors from 'cors'
 
 export const app = express();
-const port = 3000;
+
+const port = 5000;
 
 // Middleware
 app.use(express.json());
+app.use(cors());
 
 // Error handling middleware
 const errorHandler = (err, req, res, next) => {
@@ -204,6 +207,105 @@ app.get('/api/harddisks/:rfid', async (req, res, next) => {
       return res.status(404).json({ error: 'Harddisk not found' });
     }
     res.json(harddisk);
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+
+
+//----Movies CRUD ---//
+
+app.post('/api/movies', async (req, res, next) => {
+  try {
+    const { title, rent_total } = req.body;
+
+    // Basic validation
+    if (!title || !rent_total) {
+      return res.status(400).json({ message: 'Title and rent_total are required' });
+    }
+
+    const newMovie = await Movie.create({
+      title,
+      rent_total
+    });
+
+    res.status(201).json(newMovie);
+  } catch (error) {
+    if (error.name === 'SequelizeValidationError') {
+      const messages = error.errors.map(e => e.message);
+      return res.status(400).json({ message: messages });
+    }
+    if (error.name === 'SequelizeUniqueConstraintError') {
+      return res.status(409).json({ message: 'Movie title already exists' });
+    }
+    next(error);
+  }
+});
+
+// READ ALL - GET /api/movies
+app.get('/api/movies', async (req, res, next) => {
+  try {
+    const movies = await Movie.findAll({
+      order: [['created_at', 'DESC']]
+    });
+    res.json(movies);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// READ ONE - GET /api/movies/:id
+app.get('/api/movies/:id', async (req, res, next) => {
+  try {
+    const movie = await Movie.findByPk(req.params.id);
+    
+    if (!movie) {
+      return res.status(404).json({ message: 'Movie not found' });
+    }
+    
+    res.json(movie);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// UPDATE - PUT /api/movies/:id
+app.put('/api/movies/:id', async (req, res, next) => {
+  try {
+    const movie = await Movie.findByPk(req.params.id);
+    
+    if (!movie) {
+      return res.status(404).json({ message: 'Movie not found' });
+    }
+
+    await movie.update(req.body);
+    
+    res.json(movie);
+  } catch (error) {
+    if (error.name === 'SequelizeValidationError') {
+      const messages = error.errors.map(e => e.message);
+      return res.status(400).json({ message: messages });
+    }
+    if (error.name === 'SequelizeUniqueConstraintError') {
+      return res.status(409).json({ message: 'Movie title already exists' });
+    }
+    next(error);
+  }
+});
+
+// DELETE - DELETE /api/movies/:id
+app.delete('/api/movies/:id', async (req, res, next) => {
+  try {
+    const movie = await Movie.findByPk(req.params.id);
+    
+    if (!movie) {
+      return res.status(404).json({ message: 'Movie not found' });
+    }
+
+    await movie.destroy();
+    res.status(204).end();
   } catch (error) {
     next(error);
   }
