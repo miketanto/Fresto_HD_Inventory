@@ -93,7 +93,7 @@ app.post('/api/movies', async (req, res, next) => {
 
     // Create pending rentals
     const pendingRentals = await Promise.all(
-      Array(movie.rent_total).fill(null).map((_, index) => {
+      Array(Number(movie.rent_total)).fill(null).map((_, index) => {
         return Rental.create({
           movie_id: movie.id,
           movie_index_id: index + 1
@@ -138,16 +138,24 @@ app.put('/api/rentals/:id/assign-harddisk', async (req, res, next) => {
     if (!rental) {
       return res.status(404).json({ error: 'Rental not found' });
     }
-
     await rental.update({
       harddisk_id: req.body.harddisk_id
     });
 
+    const harddisk = await Harddisk.findByPk(req.body.harddisk_id);
+    if (!harddisk) {
+      return res.status(404).json({ error: 'Harddisk Not Found' });
+    }
+    await harddisk.update({
+      availability: false
+    })
     res.json(rental);
   } catch (error) {
     next(error);
   }
 });
+
+
 
 app.put('/api/rentals/:id/return', async (req, res, next) => {
   try {
@@ -238,33 +246,6 @@ app.get('/api/harddisks/:rfid', async (req, res, next) => {
 
 
 //----Movies CRUD ---//
-
-app.post('/api/movies', async (req, res, next) => {
-  try {
-    const { title, rent_total } = req.body;
-
-    // Basic validation
-    if (!title || !rent_total) {
-      return res.status(400).json({ message: 'Title and rent_total are required' });
-    }
-
-    const newMovie = await Movie.create({
-      title,
-      rent_total
-    });
-
-    res.status(201).json(newMovie);
-  } catch (error) {
-    if (error.name === 'SequelizeValidationError') {
-      const messages = error.errors.map(e => e.message);
-      return res.status(400).json({ message: messages });
-    }
-    if (error.name === 'SequelizeUniqueConstraintError') {
-      return res.status(409).json({ message: 'Movie title already exists' });
-    }
-    next(error);
-  }
-});
 
 // READ ALL - GET /api/movies
 app.get('/api/movies', async (req, res, next) => {

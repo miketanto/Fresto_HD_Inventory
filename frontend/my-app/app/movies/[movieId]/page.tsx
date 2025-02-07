@@ -4,7 +4,8 @@ import Image from "next/image";
 import { Separator } from "@/components/ui/separator"
 import { DataTable } from "../../../components/table/data-table"
 import { useState, useEffect } from 'react';
-import { columns } from '../../harddisk/components/columns'
+//import { columns } from '../../harddisk/components/columns'
+import { columns } from '../../rentals/components/columns'
 import { Harddisk, Rental } from "../../harddisk/data/schema";
 import { usePathname } from 'next/navigation'
 
@@ -12,6 +13,7 @@ export default function MovieRentalsView() {
   const pathname = usePathname()
   const movieId = pathname.split('/').pop();
   const [harddisks, setHarddisks] = useState<Harddisk[]>([]);
+  const [rentals, setRentals] = useState<Rental[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [status, setStatus] = useState<'pending' | 'active' | 'returned'>('active');
 
@@ -28,7 +30,7 @@ export default function MovieRentalsView() {
       const harddisksData = rentalsData
         .map(rental => rental.Harddisk)
         .filter((harddisk): harddisk is Harddisk => harddisk !== null);
-      
+      setRentals(rentalsData)
       setHarddisks(harddisksData);
     } catch (error) {
       console.error('Error fetching rentals:', error);
@@ -84,7 +86,7 @@ export default function MovieRentalsView() {
         {loading ? (
           <div>Loading...</div>
         ) : (
-          <DataTable data={harddisks} columns={columns} />
+          <DataTable data={rentals} columns={columns} />
         )}
       </div>
     </>

@@ -3,8 +3,8 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { Checkbox } from "@/components/ui/checkbox"
 import { DataTableColumnHeader } from "../../../components/table/data-table-column-header"
-//import { DataTableRowActions } from "../../../components/table/data-table-row-actions"
 import { Rental } from "../data/schema"
+import LinkHarddiskDialog from "./link-harddisk-dialog"
 
 export const columns: ColumnDef<Rental>[] = [
   {
@@ -48,10 +48,33 @@ export const columns: ColumnDef<Rental>[] = [
     cell: ({ row }) => {
       const harddisk = row.original.Harddisk;
       return (
-        <div className="flex space-x-2">
+        <div className="flex items-center space-x-2">
           <span className="max-w-[500px] truncate font-medium">
-            {harddisk ? `${harddisk.name} (${harddisk.id})` : row.getValue("harddisk_id")}
+            {harddisk ? `${harddisk.rfid_code}` : 'No Harddisk'}
           </span>
+          {!harddisk && (
+            <LinkHarddiskDialog
+              rentalId={row.getValue("id")}
+              onSubmit={async (rentalId, harddisk_id) => {
+                const response = await fetch(
+                  `${process.env.NEXT_PUBLIC_API_URL}/api/rentals/${rentalId}/assign-harddisk`,
+                  {
+                    method: 'PUT',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ harddisk_id }),
+                  }
+                );
+                
+                if (!response.ok) {
+                  throw new Error('Failed to link harddisk');
+                }
+                
+                //await row.table.options.meta?.refreshData();
+              }}
+            />
+          )}
         </div>
       )
     },
@@ -96,8 +119,4 @@ export const columns: ColumnDef<Rental>[] = [
       )
     },
   },
-  /*{
-    id: "actions",
-    cell: ({ row }) => <DataTableRowActions row={row} />,
-  },*/
 ]
