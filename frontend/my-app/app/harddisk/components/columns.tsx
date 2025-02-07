@@ -4,8 +4,7 @@ import { ColumnDef } from "@tanstack/react-table"
 import { Checkbox } from "@/components/ui/checkbox"
 import { DataTableColumnHeader } from "../../../components/table/data-table-column-header"
 import { Badge } from "@/components/ui/badge" // You might need to add this component
-import { z } from "zod"
-import { Harddisk} from "../data/schema"
+import {Harddisk} from "../data/schema"
 
 export const columns: ColumnDef<Harddisk>[] = [
   {

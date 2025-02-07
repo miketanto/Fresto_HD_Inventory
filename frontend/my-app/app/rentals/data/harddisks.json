@@ -1,0 +1,702 @@
+[
+  {
+    "id": 1,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2024-09-03T02:03:52.614Z"
+  },
+  {
+    "id": 2,
+    "rfid_code": null,
+    "ready_for_rental": true,
+    "availability": true,
+    "created_at": "2024-10-08T10:36:53.013Z"
+  },
+  {
+    "id": 3,
+    "rfid_code": "0xE3F6BACD9DffcbC5",
+    "ready_for_rental": true,
+    "availability": true,
+    "created_at": "2024-07-01T15:51:39.935Z"
+  },
+  {
+    "id": 4,
+    "rfid_code": "0xA7C0E302fEFAaE6d",
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2024-03-03T20:33:46.144Z"
+  },
+  {
+    "id": 5,
+    "rfid_code": "0xb4Cf6EeE17Df1D9F",
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2024-12-09T07:09:09.974Z"
+  },
+  {
+    "id": 6,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2024-10-21T01:22:43.145Z"
+  },
+  {
+    "id": 7,
+    "rfid_code": "0xDFe4b8Db1E69cA7c",
+    "ready_for_rental": true,
+    "availability": false,
+    "created_at": "2024-12-08T22:44:57.740Z"
+  },
+  {
+    "id": 8,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2024-04-02T15:29:38.954Z"
+  },
+  {
+    "id": 9,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2024-09-08T04:44:08.030Z"
+  },
+  {
+    "id": 10,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2024-05-26T10:38:51.449Z"
+  },
+  {
+    "id": 11,
+    "rfid_code": null,
+    "ready_for_rental": true,
+    "availability": false,
+    "created_at": "2024-04-05T00:01:46.167Z"
+  },
+  {
+    "id": 12,
+    "rfid_code": null,
+    "ready_for_rental": true,
+    "availability": true,
+    "created_at": "2024-07-17T01:20:22.604Z"
+  },
+  {
+    "id": 13,
+    "rfid_code": "0x48EA344DDa1DDCB7",
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2024-12-04T20:26:32.692Z"
+  },
+  {
+    "id": 14,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2024-10-15T03:19:44.227Z"
+  },
+  {
+    "id": 15,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2024-09-28T23:09:42.136Z"
+  },
+  {
+    "id": 16,
+    "rfid_code": "0xaa60E6df95ac959f",
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2025-01-19T12:28:10.688Z"
+  },
+  {
+    "id": 17,
+    "rfid_code": "0xadCC036699baEab4",
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2024-09-08T15:48:43.452Z"
+  },
+  {
+    "id": 18,
+    "rfid_code": "0x92e8beCc4C2f6f14",
+    "ready_for_rental": true,
+    "availability": true,
+    "created_at": "2024-08-06T08:49:15.813Z"
+  },
+  {
+    "id": 19,
+    "rfid_code": null,
+    "ready_for_rental": true,
+    "availability": false,
+    "created_at": "2024-06-05T07:07:21.615Z"
+  },
+  {
+    "id": 20,
+    "rfid_code": "0x4Ace5d8Dd42f9Aac",
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2024-03-07T12:15:27.047Z"
+  },
+  {
+    "id": 21,
+    "rfid_code": "0x9dcE0aB1f3CccF38",
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2024-10-18T12:49:01.332Z"
+  },
+  {
+    "id": 22,
+    "rfid_code": null,
+    "ready_for_rental": true,
+    "availability": false,
+    "created_at": "2024-06-15T17:01:03.525Z"
+  },
+  {
+    "id": 23,
+    "rfid_code": null,
+    "ready_for_rental": true,
+    "availability": false,
+    "created_at": "2024-04-04T22:07:02.123Z"
+  },
+  {
+    "id": 24,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2024-08-10T04:24:05.420Z"
+  },
+  {
+    "id": 25,
+    "rfid_code": "0xD7EE7DaAD3cbB6c4",
+    "ready_for_rental": true,
+    "availability": false,
+    "created_at": "2024-12-01T00:17:47.630Z"
+  },
+  {
+    "id": 26,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2024-09-25T22:20:48.840Z"
+  },
+  {
+    "id": 27,
+    "rfid_code": "0xaBEEf3Ec340d9b0C",
+    "ready_for_rental": true,
+    "availability": true,
+    "created_at": "2024-10-30T21:44:16.761Z"
+  },
+  {
+    "id": 28,
+    "rfid_code": "0xfc0B42e984D3FC4d",
+    "ready_for_rental": true,
+    "availability": false,
+    "created_at": "2024-12-16T02:14:31.059Z"
+  },
+  {
+    "id": 29,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2024-02-22T18:25:59.388Z"
+  },
+  {
+    "id": 30,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2024-11-21T22:32:44.400Z"
+  },
+  {
+    "id": 31,
+    "rfid_code": null,
+    "ready_for_rental": true,
+    "availability": true,
+    "created_at": "2024-07-30T16:20:34.650Z"
+  },
+  {
+    "id": 32,
+    "rfid_code": "0x2CfB8FeFcaBd0970",
+    "ready_for_rental": true,
+    "availability": true,
+    "created_at": "2025-01-29T20:57:23.708Z"
+  },
+  {
+    "id": 33,
+    "rfid_code": null,
+    "ready_for_rental": true,
+    "availability": false,
+    "created_at": "2024-06-02T14:44:30.156Z"
+  },
+  {
+    "id": 34,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2025-01-15T19:43:38.703Z"
+  },
+  {
+    "id": 35,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2024-06-11T20:25:51.947Z"
+  },
+  {
+    "id": 36,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2024-06-07T18:06:11.616Z"
+  },
+  {
+    "id": 37,
+    "rfid_code": "0xfe68e3441E0cCB62",
+    "ready_for_rental": true,
+    "availability": false,
+    "created_at": "2024-02-01T11:53:15.231Z"
+  },
+  {
+    "id": 38,
+    "rfid_code": null,
+    "ready_for_rental": true,
+    "availability": true,
+    "created_at": "2024-06-28T02:15:37.779Z"
+  },
+  {
+    "id": 39,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2024-09-21T04:53:33.253Z"
+  },
+  {
+    "id": 40,
+    "rfid_code": "0xd6fF21c59DBD72eF",
+    "ready_for_rental": true,
+    "availability": true,
+    "created_at": "2024-08-09T07:06:33.921Z"
+  },
+  {
+    "id": 41,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2024-02-01T19:17:51.593Z"
+  },
+  {
+    "id": 42,
+    "rfid_code": null,
+    "ready_for_rental": true,
+    "availability": true,
+    "created_at": "2024-08-02T19:51:00.802Z"
+  },
+  {
+    "id": 43,
+    "rfid_code": null,
+    "ready_for_rental": true,
+    "availability": false,
+    "created_at": "2024-06-16T07:29:54.153Z"
+  },
+  {
+    "id": 44,
+    "rfid_code": "0xa1f82bAFFCC3A55A",
+    "ready_for_rental": true,
+    "availability": false,
+    "created_at": "2024-11-08T20:13:33.470Z"
+  },
+  {
+    "id": 45,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2024-11-16T13:38:59.699Z"
+  },
+  {
+    "id": 46,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2024-03-21T11:03:44.525Z"
+  },
+  {
+    "id": 47,
+    "rfid_code": "0x01Bd23209a5cde26",
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2024-11-21T03:11:43.825Z"
+  },
+  {
+    "id": 48,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2024-11-16T14:36:17.849Z"
+  },
+  {
+    "id": 49,
+    "rfid_code": "0xc34B081d0B1210EC",
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2024-07-20T00:34:55.423Z"
+  },
+  {
+    "id": 50,
+    "rfid_code": "0x5130FfDC2Dff84da",
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2024-10-07T12:53:50.395Z"
+  },
+  {
+    "id": 51,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2024-10-13T17:46:51.992Z"
+  },
+  {
+    "id": 52,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2025-01-05T11:51:40.702Z"
+  },
+  {
+    "id": 53,
+    "rfid_code": null,
+    "ready_for_rental": true,
+    "availability": false,
+    "created_at": "2024-07-03T04:51:58.045Z"
+  },
+  {
+    "id": 54,
+    "rfid_code": "0x91EA7Fd49A6cF4f2",
+    "ready_for_rental": true,
+    "availability": false,
+    "created_at": "2025-01-22T23:09:50.168Z"
+  },
+  {
+    "id": 55,
+    "rfid_code": "0x6CBBCbC4160ba8cF",
+    "ready_for_rental": true,
+    "availability": true,
+    "created_at": "2024-04-23T13:56:00.317Z"
+  },
+  {
+    "id": 56,
+    "rfid_code": "0x1F2Fd8147BDA4741",
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2024-09-07T17:17:54.978Z"
+  },
+  {
+    "id": 57,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2024-06-30T05:09:33.183Z"
+  },
+  {
+    "id": 58,
+    "rfid_code": "0x62Aacbd0D36b7e4a",
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2024-02-19T02:02:57.473Z"
+  },
+  {
+    "id": 59,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2024-10-24T14:34:28.834Z"
+  },
+  {
+    "id": 60,
+    "rfid_code": "0xb5232656760aaB7e",
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2024-07-16T16:10:12.820Z"
+  },
+  {
+    "id": 61,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2024-03-27T06:27:29.651Z"
+  },
+  {
+    "id": 62,
+    "rfid_code": "0xF08BEBd0cE143Fd9",
+    "ready_for_rental": true,
+    "availability": true,
+    "created_at": "2024-02-26T18:45:41.095Z"
+  },
+  {
+    "id": 63,
+    "rfid_code": "0xD95f861D28DA49B5",
+    "ready_for_rental": true,
+    "availability": false,
+    "created_at": "2024-02-22T09:48:26.719Z"
+  },
+  {
+    "id": 64,
+    "rfid_code": "0x0a255cf6f2daC462",
+    "ready_for_rental": true,
+    "availability": false,
+    "created_at": "2025-01-01T23:15:02.497Z"
+  },
+  {
+    "id": 65,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2024-02-05T10:10:27.478Z"
+  },
+  {
+    "id": 66,
+    "rfid_code": "0xA60Aaa0A2f9592d7",
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2024-06-27T11:44:46.990Z"
+  },
+  {
+    "id": 67,
+    "rfid_code": "0xaf9766c3be9bFA26",
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2024-09-12T15:41:27.054Z"
+  },
+  {
+    "id": 68,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2024-10-13T02:09:54.606Z"
+  },
+  {
+    "id": 69,
+    "rfid_code": "0xDaE525ab21AB455A",
+    "ready_for_rental": true,
+    "availability": false,
+    "created_at": "2025-01-02T08:25:15.097Z"
+  },
+  {
+    "id": 70,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2024-12-20T00:26:41.257Z"
+  },
+  {
+    "id": 71,
+    "rfid_code": "0x6C85fA9b37E4ae7E",
+    "ready_for_rental": true,
+    "availability": true,
+    "created_at": "2024-05-18T16:20:42.463Z"
+  },
+  {
+    "id": 72,
+    "rfid_code": "0x1F6DF5C49832Fa4B",
+    "ready_for_rental": true,
+    "availability": true,
+    "created_at": "2024-09-06T23:25:24.459Z"
+  },
+  {
+    "id": 73,
+    "rfid_code": "0xAd9b7A77FABEEaCF",
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2024-04-20T17:47:18.894Z"
+  },
+  {
+    "id": 74,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2024-09-16T13:38:55.685Z"
+  },
+  {
+    "id": 75,
+    "rfid_code": null,
+    "ready_for_rental": true,
+    "availability": false,
+    "created_at": "2024-10-18T18:02:22.034Z"
+  },
+  {
+    "id": 76,
+    "rfid_code": null,
+    "ready_for_rental": true,
+    "availability": false,
+    "created_at": "2024-06-12T00:53:58.117Z"
+  },
+  {
+    "id": 77,
+    "rfid_code": "0xf7cDEAaC4A7Ebb13",
+    "ready_for_rental": true,
+    "availability": false,
+    "created_at": "2024-06-28T23:05:52.262Z"
+  },
+  {
+    "id": 78,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2024-08-30T05:38:58.299Z"
+  },
+  {
+    "id": 79,
+    "rfid_code": "0xAA9Bbe775CDA6F88",
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2024-04-29T04:55:15.719Z"
+  },
+  {
+    "id": 80,
+    "rfid_code": "0xe8AccaCFA4b65bb2",
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2024-09-21T16:14:39.410Z"
+  },
+  {
+    "id": 81,
+    "rfid_code": null,
+    "ready_for_rental": true,
+    "availability": false,
+    "created_at": "2024-12-10T11:39:13.382Z"
+  },
+  {
+    "id": 82,
+    "rfid_code": null,
+    "ready_for_rental": true,
+    "availability": true,
+    "created_at": "2024-04-21T05:07:09.160Z"
+  },
+  {
+    "id": 83,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2024-03-05T17:06:27.674Z"
+  },
+  {
+    "id": 84,
+    "rfid_code": null,
+    "ready_for_rental": true,
+    "availability": true,
+    "created_at": "2024-07-17T12:39:17.351Z"
+  },
+  {
+    "id": 85,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2024-03-17T11:19:48.552Z"
+  },
+  {
+    "id": 86,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2024-06-30T08:49:34.331Z"
+  },
+  {
+    "id": 87,
+    "rfid_code": null,
+    "ready_for_rental": true,
+    "availability": true,
+    "created_at": "2024-08-10T11:57:56.483Z"
+  },
+  {
+    "id": 88,
+    "rfid_code": "0xfcbEDcD2EeD95aB6",
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2024-11-01T03:17:52.066Z"
+  },
+  {
+    "id": 89,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2024-10-23T00:35:45.765Z"
+  },
+  {
+    "id": 90,
+    "rfid_code": "0xdceACB29b8Be5ed2",
+    "ready_for_rental": true,
+    "availability": true,
+    "created_at": "2024-02-14T03:26:12.940Z"
+  },
+  {
+    "id": 91,
+    "rfid_code": null,
+    "ready_for_rental": true,
+    "availability": false,
+    "created_at": "2024-03-28T01:07:29.489Z"
+  },
+  {
+    "id": 92,
+    "rfid_code": "0x1A764b82cc1dDeb3",
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2024-07-06T04:58:04.212Z"
+  },
+  {
+    "id": 93,
+    "rfid_code": "0x3ac222a8b8Ede0D2",
+    "ready_for_rental": true,
+    "availability": true,
+    "created_at": "2024-06-18T21:53:10.177Z"
+  },
+  {
+    "id": 94,
+    "rfid_code": "0xF3936BEeCae0A2ab",
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2024-03-21T12:37:06.484Z"
+  },
+  {
+    "id": 95,
+    "rfid_code": "0xCc7cdE1A7deDf255",
+    "ready_for_rental": true,
+    "availability": false,
+    "created_at": "2024-08-07T01:27:05.747Z"
+  },
+  {
+    "id": 96,
+    "rfid_code": "0xfc31F72Af9Ab5aE4",
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2024-08-12T16:58:07.343Z"
+  },
+  {
+    "id": 97,
+    "rfid_code": "0xe7ccd58BD86E868C",
+    "ready_for_rental": false,
+    "availability": false,
+    "created_at": "2024-07-23T07:03:28.282Z"
+  },
+  {
+    "id": 98,
+    "rfid_code": "0x6EDd5c2A6B3b381d",
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2024-04-11T03:50:35.238Z"
+  },
+  {
+    "id": 99,
+    "rfid_code": null,
+    "ready_for_rental": true,
+    "availability": true,
+    "created_at": "2024-08-09T11:21:23.066Z"
+  },
+  {
+    "id": 100,
+    "rfid_code": null,
+    "ready_for_rental": false,
+    "availability": true,
+    "created_at": "2024-04-13T15:47:51.990Z"
+  }
+]

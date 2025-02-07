@@ -174,6 +174,15 @@ app.get('/api/harddisks', async (req, res, next) => {
   }
 });
 
+app.get('/api/rentals', async (req, res, next) => {
+  try {
+    const rentals = await Rental.findAll();
+    res.json(rentals);
+  } catch (error) {
+    next(error);
+  }
+});
+
 app.get('/api/movies/:id/rentals', async (req, res, next) => {
   try {
     const rentals = await Rental.findAll({
