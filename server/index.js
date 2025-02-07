@@ -31,6 +31,19 @@ app.post('/api/harddisks', async (req, res, next) => {
   }
 });
 
+
+app.get('/api/harddisks/:id/rfid', async (req, res, next) => {
+  try {
+    const harddisk = await Harddisk.findByRFID(req.params.id);
+    if (!harddisk) {
+      return res.status(404).json({ error: 'Harddisk not found' });
+    }
+    res.json(harddisk);
+  } catch (error) {
+    next(error);
+  }
+});
+
 app.put('/api/harddisks/:id/rfid', async (req, res, next) => {
   try {
     const harddisk = await Harddisk.findByPk(req.params.id);
@@ -46,7 +59,7 @@ app.put('/api/harddisks/:id/rfid', async (req, res, next) => {
 
 app.put('/api/harddisks/:id/ready', async (req, res, next) => {
   try {
-    const harddisk = await Harddisk.findByPk(req.params.id);
+    const harddisk = await Harddisk.findByRFID(req.params.id);
     if (!harddisk) {
       return res.status(404).json({ error: 'Harddisk not found' });
     }

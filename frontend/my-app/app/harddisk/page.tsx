@@ -5,6 +5,7 @@ import { DataTable } from "../../components/table/data-table"
 import { useState, useEffect } from 'react';
 import { columns } from './components/columns'
 import { AddHarddiskDialog } from "./components/add-harddisk-dialog";
+import { MarkReadyDialog } from "./components/mark-ready-dialog";
 
 interface Harddisk {
   id: number;
@@ -64,6 +65,34 @@ export default function HarddisksView() {
     return <p>Loading...</p>;
   }
 
+
+  const handleMarkReady = async (rfid_code:string) => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/harddisks/${rfid_code}/ready`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        fetchHarddisks();
+      } else {
+        console.error('Failed to mark harddisk as ready');
+      }
+    } catch (error) {
+      console.error('Error during fetch:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+
   return (
     <>
       <div className="md:hidden">
@@ -93,6 +122,7 @@ export default function HarddisksView() {
         </div>
         <div>
           <AddHarddiskDialog onSubmit={handleAddHarddisk} />
+          <MarkReadyDialog onSubmit={handleMarkReady}/>
         </div>
         <DataTable data={harddisks} columns={columns} />
       </div>
