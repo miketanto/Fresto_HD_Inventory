@@ -6,43 +6,60 @@ import { X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { DataTableViewOptions } from "./data-table-view-options"
-
-import { priorities, statuses } from "../../app/harddisk/data/data"
 import { DataTableFacetedFilter } from "./data-table-faceted-filter"
+
+// New props type for filterable columns
+export interface FilterableColumns {
+  input?: {
+    columnId: string
+    placeholder?: string
+  }
+  facets?: {
+    columnId: string
+    title: string
+    options: {
+      label: string
+      value: string
+      icon?: React.ComponentType<{ className?: string }>
+    }[]
+  }[]
+}
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
+  filterable?: FilterableColumns
 }
 
 export function DataTableToolbar<TData>({
   table,
+  filterable,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0
 
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
-        <Input
-          placeholder="Filter tasks..."
-          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("title")?.setFilterValue(event.target.value)
-          }
-          className="h-8 w-[150px] lg:w-[250px]"
-        />
-        {table.getColumn("status") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("status")}
-            title="Status"
-            options={statuses}
+        {filterable?.input && (
+          <Input
+            placeholder={filterable.input.placeholder || "Filter..."}
+            value={
+              (table.getColumn(filterable.input.columnId)?.getFilterValue() as string) ?? ""
+            }
+            onChange={(event) =>
+              filterable?.input && table.getColumn(filterable.input.columnId)?.setFilterValue(event.target.value)
+            }
+            className="h-8 w-[150px] lg:w-[250px]"
           />
         )}
-        {table.getColumn("priority") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("priority")}
-            title="Priority"
-            options={priorities}
-          />
+        {filterable?.facets?.map((facet) =>
+          table.getColumn(facet.columnId) ? (
+            <DataTableFacetedFilter
+              key={facet.columnId}
+              column={table.getColumn(facet.columnId)}
+              title={facet.title}
+              options={facet.options}
+            />
+          ) : null
         )}
         {isFiltered && (
           <Button

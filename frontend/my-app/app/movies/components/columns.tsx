@@ -53,12 +53,14 @@ export const columns: ColumnDef<Movie>[] = [
       <DataTableColumnHeader column={column} title="Title" />
     ),
     cell: ({ row }) => {
+      const id = row.getValue("id");
       return (
-        <div className="flex space-x-2">
-          <span className="max-w-[500px] truncate font-medium">
-            {row.getValue("title")}
-          </span>
-        </div>
+        <a 
+          href={`/movies/${id}`}
+          className="max-w-[500px] truncate font-medium text-blue-500 hover:underline"
+        >
+          {row.getValue("title")}
+        </a>
       )
     },
     enableSorting: true,

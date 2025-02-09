@@ -122,9 +122,34 @@ export default function HarddisksView() {
         </div>
         <div>
           <AddHarddiskDialog onSubmit={handleAddHarddisk} />
-          <MarkReadyDialog onSubmit={handleMarkReady}/>
+          <MarkReadyDialog className = "bg-green-200" onSubmit={handleMarkReady}/>
         </div>
-        <DataTable data={harddisks} columns={columns} />
+        <DataTable 
+          data={harddisks} 
+          columns={columns}
+          filterable={{
+            input: { columnId: "rfid_code", placeholder: "Filter RFID Code..." },
+            
+            facets: [
+              {
+                columnId: "ready_for_rental",
+                title: "Ready for Rental",
+                options: [
+                  { label: "Ready", value: "ready" },
+                  { label: "Not Ready", value: "not ready" },
+                ],
+              },
+              {
+                columnId: "availability",
+                title: "Availability",
+                options: [
+                  { label: "Available", value: "available" },
+                  { label: "Not Available", value: "not available" },
+                ],
+              },
+            ],
+          }}
+        />
       </div>
     </>
   );

@@ -139,44 +139,85 @@ app.put('/api/rentals/:id/assign-harddisk', async (req, res, next) => {
       return res.status(404).json({ error: 'Rental not found' });
     }
     await rental.update({
-      harddisk_id: req.body.harddisk_id
+      harddisk_id: req.body.harddisk_id,
+      comments: req.body.comments
     });
-
-    const harddisk = await Harddisk.findByPk(req.body.harddisk_id);
-    if (!harddisk) {
-      return res.status(404).json({ error: 'Harddisk Not Found' });
-    }
-    await harddisk.update({
-      availability: false
-    })
     res.json(rental);
   } catch (error) {
     next(error);
   }
 });
 
+app.post('/api/rentals', async (req, res, next) => {
+  try {
+    const { movie_id, harddisk_id, movie_index_id, comments } = req.body;
+    const rental = await Rental.create({
+      movie_id,
+      harddisk_id,
+      movie_index_id,
+      comments
+    });
+    res.status(201).json(rental);
+  } catch (error) {
+    next(error);
+  }
+});
 
-
+// Modified: Use harddisk RFID to return a rental with additional validations
 app.put('/api/rentals/:id/return', async (req, res, next) => {
   try {
-    const rental = await Rental.findByPk(req.params.id, {
+    const harddisk = await Harddisk.findByRFID(req.params.id);
+    if (!harddisk) {
+      return res.status(404).json({ error: 'Harddisk not found' });
+    }
+    // Find active rental (started but not yet returned)
+    const rental = await Rental.findOne({
+      where: { 
+        harddisk_id: harddisk.id, 
+        rented_at: { [Op.not]: null },
+        returned_at: { [Op.is]: null }
+      },
       include: [Harddisk]
     });
-    
     if (!rental) {
-      return res.status(404).json({ error: 'Rental not found' });
+      return res.status(404).json({ error: 'No active rental found for given harddisk' });
     }
-
-    await rental.update({
-      returned_at: new Date()
-    });
-
+    await rental.update({ returned_at: new Date() });
     if (rental.Harddisk) {
-      await rental.Harddisk.update({
-        availability: true
-      });
+      await rental.Harddisk.update({ availability: true });
     }
+    res.json(rental);
+  } catch (error) {
+    next(error);
+  }
+});
 
+// Modified: Use harddisk RFID to start a rental with additional validations
+app.put('/api/rentals/:id/start', async (req, res, next) => {
+  try {
+    const harddisk = await Harddisk.findByRFID(req.params.id);
+    if (!harddisk) {
+      return res.status(404).json({ error: 'Harddisk not found' });
+    }
+    // Find pending rental (not started yet)
+    const rental = await Rental.findOne({
+      where: { 
+        harddisk_id: harddisk.id, 
+        rented_at: { [Op.is]: null }
+      },
+      include: [Harddisk]
+    });
+    if (!rental) {
+      return res.status(404).json({ error: 'No pending rental found for given harddisk' });
+    }
+    // Update rental and mark harddisk unavailable
+    await rental.update({ rented_at: new Date() });
+    if (rental.harddisk_id) {
+      const hd = await Harddisk.findByPk(rental.harddisk_id);
+      if (hd) {
+        await hd.update({ availability: false });
+      }
+    }
     res.json(rental);
   } catch (error) {
     next(error);

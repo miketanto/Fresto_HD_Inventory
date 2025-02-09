@@ -166,10 +166,16 @@ export const Rental = sequelize.define('Rental', {
     type: DataTypes.INTEGER,
     allowNull: false
   },
-  rented_at: {
+  created_at: {
     type: DataTypes.DATE,
-    allowNull: false,
     defaultValue: DataTypes.NOW
+  },
+  comments: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  rented_at: {
+    type: DataTypes.DATE       // Remove default value
   },
   returned_at: {
     type: DataTypes.DATE
@@ -197,9 +203,6 @@ Rental.beforeUpdate(async (rental) => {
     if (!harddisk) {
       throw new Error('Harddisk not found');
     }
-    if (!harddisk.ready_for_rental) {
-      throw new Error('Harddisk is not ready for rental');
-    }
     if (!harddisk.availability) {
       throw new Error('Harddisk is not available');
     }
@@ -207,20 +210,30 @@ Rental.beforeUpdate(async (rental) => {
 });
 
 Rental.beforeUpdate(async (rental) => {
-  // If harddisk_id is being updated
   if (rental.changed('harddisk_id') && rental.harddisk_id) {
     const harddisk = await Harddisk.findByPk(rental.harddisk_id);
     if (!harddisk) {
       throw new Error('Harddisk not found');
-    }
-    if (!harddisk.ready_for_rental) {
-      throw new Error('Harddisk is not ready for rental');
     }
     if (!harddisk.availability) {
       throw new Error('Harddisk is not available');
     }
   }
 });
+
+// NEW Hook: Check that rental start cannot occur if harddisk is not ready
+Rental.beforeUpdate(async (rental) => {
+  if (rental.changed('rented_at') && rental.rented_at) {
+    const harddisk = await Harddisk.findByPk(rental.harddisk_id);
+    if (!harddisk) {
+      throw new Error('Associated harddisk not found');
+    }
+    if (!harddisk.ready_for_rental) {
+      throw new Error('Cannot start rental as harddisk is not ready');
+    }
+  }
+});
+
 // Add hooks for validation
 Rental.beforeCreate(async (rental) => {
   // Check if movie_index_id exceeds rent_total
@@ -272,7 +285,6 @@ Movie.hasMany(Rental, {
   onDelete: 'RESTRICT'
 });
 Rental.belongsTo(Movie, { foreignKey: 'movie_id' });
-
 
 // Sync all models with the database
 sequelize.sync()

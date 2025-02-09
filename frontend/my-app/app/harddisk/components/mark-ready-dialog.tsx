@@ -63,7 +63,7 @@ export function MarkReadyDialog({ onSubmit }: { onSubmit: (rfid_code:string) => 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Mark Harddisk Ready</Button>
+        <Button className="bg-green-500 text-white hover:bg-green-600">Mark Harddisk Ready</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -94,7 +94,7 @@ export function MarkReadyDialog({ onSubmit }: { onSubmit: (rfid_code:string) => 
           <DialogFooter>
             {
                 checked?
-                <DialogClose><Button type = "submit">Mark Harddisk Ready</Button></DialogClose> : <Button onClick = {handleCheck}>Check Harddisk</Button>
+                <DialogClose><Button type = "submit" className="bg-green-500 text-white hover:bg-green-600">Mark Harddisk Ready</Button></DialogClose> : <Button onClick = {handleCheck}>Check Harddisk</Button>
             }
           </DialogFooter>
         </form>

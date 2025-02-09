@@ -40,27 +40,16 @@ export default function RootLayout({
         <div className = "fixed top-10 w-screen flex justify-center h-1/10 ">
         <Menubar>
           <MenubarMenu>
-              <a href = "harddisk"><MenubarTrigger>Inventory</MenubarTrigger></a>
+              <a href = "/movies"><MenubarTrigger>Movies</MenubarTrigger></a>
           </MenubarMenu>
           <MenubarMenu>
-              <MenubarTrigger>Add</MenubarTrigger>
-              <MenubarContent>
-                <MenubarItem>
-                  New Movie <MenubarShortcut>⌘T</MenubarShortcut>
-                </MenubarItem>
-                <MenubarItem>
-                  New Harddisk <MenubarShortcut>⌘N</MenubarShortcut>
-                </MenubarItem>
-                <MenubarItem>
-                  New Rental <MenubarShortcut>⌘N</MenubarShortcut>
-                </MenubarItem>
-              </MenubarContent>
+              <a href = "/harddisk"><MenubarTrigger>Harddisk</MenubarTrigger></a>
           </MenubarMenu>
           <MenubarMenu>
-              <a href = "harddisk"><MenubarTrigger>Return </MenubarTrigger></a>
+              <a href = "/rentals"><MenubarTrigger>Rentals</MenubarTrigger></a>
           </MenubarMenu>
           <MenubarMenu>
-              <MenubarTrigger>Home</MenubarTrigger>
+              <a href = "/rentals/modify"><MenubarTrigger>Modify Rental</MenubarTrigger></a>
           </MenubarMenu>
         </Menubar>
         </div>

@@ -13,26 +13,39 @@ interface RentalFormData {
 }
 
 export default function RentalView() {
-  const [rentals, setrentals] = useState<Rental[]>([]);
+  const [rentals, setRentals] = useState<any[]>([]);
+  const [movies, setMovies] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  // Fetch the rentals from the API when the component mounts
-  const fetchrentals = async () => {
+  const fetchData = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/rentals`);
-      const rentalsData = await response.json();
-      setrentals(rentalsData);
+      // Fetch movies first
+      const moviesResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/movies`);
+      const moviesData = await moviesResponse.json();
+      setMovies(moviesData);
+
+      // Then fetch rentals
+      const rentalsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/rentals`);
+      let rentalsData = await rentalsResponse.json();
+      
+      // Replace movie_id with movie_name using the movies lookup
+      rentalsData = rentalsData.map((rental: any) => {
+        const movie = moviesData.find((m: any) => m.id === rental.movie_id);
+        return { ...rental, movie_name: movie ? movie.title : 'Unknown' };
+      });
+      
+      setRentals(rentalsData);
     } catch (error) {
-      console.error('Error fetching rentals:', error);
+      console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchrentals();
-  }, []); // Empty dependency array to run once on mount
+    fetchData();
+  }, []);
 
   //Callback to add a new harddisk
   const handleLinkHarddisk = async (rentalData:RentalFormData) => {
@@ -94,7 +107,37 @@ export default function RentalView() {
         <div>
           <AddRentalDialog onSubmit={handleLinkHarddisk} />
         </div>
-        <DataTable data={rentals} columns={columns} />
+        <DataTable data={rentals} columns={columns} 
+          filterable={{
+            input: {columnId: "movie_name", placeholder: "Filter by movie name..."},
+            facets: [{ 
+              columnId: "comments",
+              title: "Comments",
+              options: [
+                { label: "No Comments", value: "No comments" },
+                { label: "Test", value: "Test" },
+                { label: "Production", value: "Production" },
+              ],
+            },
+            {
+              columnId: "rented_at",
+              title: "Rented At",
+              options: [
+                { label: "Rented", value: "rented" },
+                { label: "Not Rented", value: "not rented" },
+              ],
+            },
+            {
+              columnId: "returned_at",
+              title: "Returned At",
+              options: [
+                { label: "Returned", value: "returned" },
+                { label: "Not Returned", value: "not returned" },
+              ],
+            }
+            ],
+          }}
+        />
       </div>
     </>
   );

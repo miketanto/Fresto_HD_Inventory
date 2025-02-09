@@ -9,10 +9,12 @@ import { columns } from '../../rentals/components/columns'
 import { Harddisk, Rental } from "../../harddisk/data/schema";
 import { usePathname } from 'next/navigation'
 
+
 export default function MovieRentalsView() {
   const pathname = usePathname()
   const movieId = pathname.split('/').pop();
-  const [harddisks, setHarddisks] = useState<Harddisk[]>([]);
+  const [harddisk, setHarddisks] = useState<Harddisk[]>([]);
+  const [movies, setMovies] = useState<any[]>([]);
   const [rentals, setRentals] = useState<Rental[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [status, setStatus] = useState<'pending' | 'active' | 'returned'>('active');
@@ -21,17 +23,28 @@ export default function MovieRentalsView() {
   const fetchRentals = async () => {
     setLoading(true);
     try {
+
+      // Fetch movies first
+      const moviesResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/movies`);
+      const moviesData = await moviesResponse.json();
+      setMovies(moviesData);
+
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/movies/${movieId}/rentals`
       );
-      const rentalsData: Rental[] = await response.json();
-      
-      // Extract just the harddisks from the rentals
-      const harddisksData = rentalsData
+      const rentalsDataRes: Rental[] = await response.json();
+      // Replace movie_id with movie_name using the movies lookup
+      const harddisksData = rentalsDataRes
         .map(rental => rental.Harddisk)
         .filter((harddisk): harddisk is Harddisk => harddisk !== null);
+      
+      const rentalsData = rentalsDataRes.map((rental: any) => {
+        const movie = moviesData.find((m: any) => m.id === rental.movie_id);
+        return { ...rental, movie_name: movie ? movie.title : 'Unknown' };
+      });
       setRentals(rentalsData)
       setHarddisks(harddisksData);
+      // Extract just the harddisks from the rentals
     } catch (error) {
       console.error('Error fetching rentals:', error);
     } finally {
@@ -86,7 +99,37 @@ export default function MovieRentalsView() {
         {loading ? (
           <div>Loading...</div>
         ) : (
-          <DataTable data={rentals} columns={columns} />
+          <DataTable data={rentals} columns={columns} 
+          filterable={{
+            input: {columnId: "harddisk_id", placeholder: "Filter by movie name..."},
+            facets: [{ 
+              columnId: "comments",
+              title: "Comments",
+              options: [
+                { label: "No Comments", value: "No comments" },
+                { label: "Test", value: "Test" },
+                { label: "Production", value: "Production" },
+              ],
+            },
+            {
+              columnId: "rented_at",
+              title: "Rented At",
+              options: [
+                { label: "Rented", value: "rented" },
+                { label: "Not Rented", value: "not rented" },
+              ],
+            },
+            {
+              columnId: "returned_at",
+              title: "Returned At",
+              options: [
+                { label: "Returned", value: "returned" },
+                { label: "Not Returned", value: "not returned" },
+              ],
+            }
+            ],
+          }}
+          />
         )}
       </div>
     </>

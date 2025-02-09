@@ -43,7 +43,7 @@ export function AddMovieDialog({ onSubmit }: { onSubmit: (movieData:any) => void
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Add New Movie</Button>
+        <Button className="bg-green-500 text-white hover:bg-green-600">Add New Movie</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

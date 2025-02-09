@@ -15,12 +15,13 @@ import { Label } from "@/components/ui/label"
 
 interface LinkHarddiskDialogProps {
   rentalId: number;
-  onSubmit: (rentalId: number, rfidCode: string) => Promise<void>;
+  onSubmit: (rentalId: number, harddiskId: string, comments: string) => Promise<void>;
 }
 
 const LinkHarddiskDialog = ({ rentalId, onSubmit }: LinkHarddiskDialogProps) => {
   const [rfidCode, setRfidCode] = useState<string>('');
   const [harddiskId, setHarddiskId] = useState<string>('');
+  const [comments, setComments] = useState<string>(''); // NEW state for rental comments
   const [error, setError] = useState<string | null>(null);
   const [checked, setChecked] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -58,9 +59,10 @@ const LinkHarddiskDialog = ({ rentalId, onSubmit }: LinkHarddiskDialogProps) => 
     setError(null);
     
     try {
-      await onSubmit(rentalId, harddiskId);
+      await onSubmit(rentalId, harddiskId, comments); // pass comments
       setRfidCode("");
       setHarddiskId("");
+      setComments(""); // reset comments
       setChecked(false);
     } catch (error) {
       setError("Error linking harddisk");
@@ -76,6 +78,10 @@ const LinkHarddiskDialog = ({ rentalId, onSubmit }: LinkHarddiskDialogProps) => 
     setError(null);
   };
 
+  const handleCommentsChange = (e: React.ChangeEvent<HTMLInputElement>) => { // NEW handler
+    setComments(e.target.value);
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -85,7 +91,7 @@ const LinkHarddiskDialog = ({ rentalId, onSubmit }: LinkHarddiskDialogProps) => 
         <DialogHeader>
           <DialogTitle>Link Harddisk to Rental</DialogTitle>
           <DialogDescription>
-            Scan or enter the RFID code of the harddisk you want to link
+            Scan or enter the RFID code and add any rental comments.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
@@ -101,6 +107,19 @@ const LinkHarddiskDialog = ({ rentalId, onSubmit }: LinkHarddiskDialogProps) => 
                 className="col-span-3"
                 disabled={loading}
                 autoFocus
+              />
+            </div>
+            {/* NEW: Input for rental comments */}
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="rental_comments" className="text-right">
+                Comments
+              </Label>
+              <Input
+                id="rental_comments"
+                value={comments}
+                onChange={handleCommentsChange}
+                className="col-span-3"
+                disabled={loading}
               />
             </div>
             {error && (

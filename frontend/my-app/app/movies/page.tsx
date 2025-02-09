@@ -1,11 +1,9 @@
 "use client"
 
 import Image from "next/image";
-import { Separator } from "@/components/ui/separator"
 import { DataTable } from "../../components/table/data-table"
 import { useState, useEffect } from 'react';
 import {columns} from './components/columns'
-import { Button } from "@/components/ui/button";
 import { AddMovieDialog } from "./components/add-movie-dialog";
 
 interface Movie {
@@ -49,7 +47,7 @@ interface Movie {
         });
   
         if (response.ok) {
-          const newMovie = await response.json();
+          await response.json();
           fetchMovies();
         } else {
           console.error('Failed to add movie');
@@ -86,9 +84,9 @@ interface Movie {
         <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
           <div className="flex items-center justify-between space-y-2">
             <div>
-              <h2 className="text-2xl font-bold tracking-tight">Rental Overview</h2>
+              <h2 className="text-2xl font-bold tracking-tight">Movies Overview</h2>
               <p className="text-muted-foreground">
-                Manage current rentals and review rental history
+                Manage current Movies
               </p>
             </div>
           </div>

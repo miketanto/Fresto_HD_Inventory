@@ -69,6 +69,11 @@ export const columns: ColumnDef<Harddisk>[] = [
         </Badge>
       )
     },
+    filterFn: (row, columnId, filterValue) => {
+      if (!filterValue) return true
+      const cellText = row.getValue(columnId) ? "ready" : "not ready"
+      return cellText === String(filterValue).toLowerCase()
+    },
   },
   {
     accessorKey: "availability",
@@ -82,6 +87,11 @@ export const columns: ColumnDef<Harddisk>[] = [
           {isAvailable ? "Available" : "Not Available"}
         </Badge>
       )
+    },
+    filterFn: (row, columnId, filterValue) => {
+      if (!filterValue) return true
+      const cellText = row.getValue(columnId) ? "available" : "not available"
+      return cellText === String(filterValue).toLowerCase()
     },
   },
   {
