@@ -5,7 +5,9 @@ import { DataTable } from "../../components/table/data-table"
 import { useState, useEffect } from 'react';
 import { columns } from './components/columns'
 import { AddRentalDialog } from "./components/add-rental-dialog";
-import {Rental} from './data/schema'
+// import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated'
+// import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
+//import { useRouter } from "next/navigation"
 
 interface RentalFormData {
   harddisk_id: number;
@@ -16,7 +18,17 @@ export default function RentalView() {
   const [rentals, setRentals] = useState<any[]>([]);
   const [movies, setMovies] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  //const router = useRouter(); // initialize router
 
+  // const isAuthenticated = useIsAuthenticated()
+  // const user = useAuthUser()
+  // if(!isAuthenticated){
+  //   //router.push("/login")
+  //   //Redirect using windows location
+  //   window.location.href = "/login"
+  // }else{
+  //   console.log(user)
+  // }
   const fetchData = async () => {
     setLoading(true);
     try {

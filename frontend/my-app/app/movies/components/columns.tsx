@@ -5,11 +5,12 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { DataTableColumnHeader } from "../../../components/table/data-table-column-header"
 //import { DataTableRowActions } from "../../../components/table/data-table-row-actions"
 
-// Define the Movie type based on your model
+// Define the Movie type including computed fields.
 interface Movie {
-  id: number
   title: string
   rent_total: number
+  rentedCount: number
+  returnedCount: number
   created_at: string
 }
 
@@ -39,30 +40,18 @@ export const columns: ColumnDef<Movie>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "id",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Movie ID" />
-    ),
-    cell: ({ row }) => <div className="w-[80px]">{row.getValue("id")}</div>,
-    enableSorting: true,
-    enableHiding: false,
-  },
-  {
     accessorKey: "title",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Title" />
     ),
-    cell: ({ row }) => {
-      const id = row.getValue("id");
-      return (
-        <a 
-          href={`/movies/${id}`}
-          className="max-w-[500px] truncate font-medium text-blue-500 hover:underline"
-        >
-          {row.getValue("title")}
-        </a>
-      )
-    },
+    cell: ({ row }) => (
+      <a 
+        href={`/movies/${row.original.title}`} // Adjust link as needed
+        className="max-w-[500px] truncate font-medium text-blue-500 hover:underline"
+      >
+        {row.getValue("title")}
+      </a>
+    ),
     enableSorting: true,
   },
   {
@@ -75,6 +64,22 @@ export const columns: ColumnDef<Movie>[] = [
         {row.getValue("rent_total")}
       </div>
     ),
+    enableSorting: true,
+  },
+  {
+    accessorKey: "rentedCount",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Rented" />
+    ),
+    cell: ({ row }) => <div>{row.getValue("rentedCount")}</div>,
+    enableSorting: true,
+  },
+  {
+    accessorKey: "returnedCount",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Returned" />
+    ),
+    cell: ({ row }) => <div>{row.getValue("returnedCount")}</div>,
     enableSorting: true,
   },
   {

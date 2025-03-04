@@ -6,9 +6,7 @@ import {
   Menubar,
   MenubarMenu,
   MenubarTrigger,
-  MenubarItem, 
-  MenubarContent,
-  MenubarShortcut
+  MenubarItem
 } from "@/components/ui/menubar"
 
 const geistSans = localFont({
@@ -33,28 +31,28 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <div className = "fixed top-10 w-screen flex justify-center h-1/10 ">
-        <Menubar>
-          <MenubarMenu>
-              <a href = "/movies"><MenubarTrigger>Movies</MenubarTrigger></a>
-          </MenubarMenu>
-          <MenubarMenu>
-              <a href = "/harddisk"><MenubarTrigger>Harddisk</MenubarTrigger></a>
-          </MenubarMenu>
-          <MenubarMenu>
-              <a href = "/rentals"><MenubarTrigger>Rentals</MenubarTrigger></a>
-          </MenubarMenu>
-          <MenubarMenu>
-              <a href = "/rentals/modify"><MenubarTrigger>Modify Rental</MenubarTrigger></a>
-          </MenubarMenu>
-        </Menubar>
-        </div>
-        {children}
-      </body>
-    </html>
+      <html lang="en">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <div className = "fixed top-10 w-screen flex justify-center h-1/10 ">
+          <Menubar>
+            <MenubarMenu>
+                <a href = "/movies"><MenubarTrigger>Movies</MenubarTrigger></a>
+            </MenubarMenu>
+            <MenubarMenu>
+                <a href = "/harddisk"><MenubarTrigger>Harddisk</MenubarTrigger></a>
+            </MenubarMenu>
+            <MenubarMenu>
+                <a href = "/rentals"><MenubarTrigger>Rentals</MenubarTrigger></a>
+            </MenubarMenu>
+            <MenubarMenu>
+                <a href = "/rentals/modify"><MenubarTrigger>Modify Rental</MenubarTrigger></a>
+            </MenubarMenu>
+          </Menubar>
+          </div>
+          {children}
+        </body>
+      </html>
   );
 }

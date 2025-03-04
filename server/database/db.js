@@ -244,9 +244,9 @@ Rental.beforeCreate(async (rental) => {
     where: { movie_id: rental.movie_id }
   });
   
-  if (existingRentalsCount >= movie.rent_total) {
-    throw new Error('Exceeded maximum rentals for this movie');
-  }
+  // if (existingRentalsCount >= movie.rent_total) {
+  //   throw new Error('Exceeded maximum rentals for this movie');
+  // }
   
   // Check for duplicate movie_index_id
   const duplicateRental = await Rental.findOne({

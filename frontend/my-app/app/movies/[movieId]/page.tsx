@@ -18,6 +18,7 @@ export default function MovieRentalsView() {
   const [rentals, setRentals] = useState<Rental[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [status, setStatus] = useState<'pending' | 'active' | 'returned'>('active');
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   // Fetch the rentals for the specific movie
   const fetchRentals = async () => {
@@ -47,6 +48,29 @@ export default function MovieRentalsView() {
       // Extract just the harddisks from the rentals
     } catch (error) {
       console.error('Error fetching rentals:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // New handler: Add Rental
+  const handleAddRental = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch(`${API_URL}/api/movies/${movieId}/rentals`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({}) // Or add additional fields like comments/harddisk_id if needed
+      });
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Failed to add rental");
+      }
+      alert("Rental added successfully");
+      fetchRentals(); // refresh list
+    } catch (error: any) {
+      console.error(error);
+      alert(error.message);
     } finally {
       setLoading(false);
     }
@@ -94,6 +118,14 @@ export default function MovieRentalsView() {
               <option value="active">Active</option>
               <option value="returned">Returned</option>
             </select>
+            {/* New Add Rental button */}
+            <button 
+              onClick={handleAddRental} 
+              disabled={loading} 
+              className="bg-blue-500 text-white p-2 rounded"
+            >
+              {loading ? "Adding Rental..." : "Add Rental"}
+            </button>
           </div>
         </div>
         {loading ? (

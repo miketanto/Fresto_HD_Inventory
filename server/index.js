@@ -2,6 +2,7 @@ import express from 'express';
 import { Movie, Harddisk, Rental } from './database/db.js';
 import { Op } from 'sequelize';
 import cors from 'cors'
+import {register, login} from './controllers/authController.js';
 
 export const app = express();
 
@@ -57,11 +58,15 @@ app.put('/api/harddisks/:id/rfid', async (req, res, next) => {
   }
 });
 
+// Update Ready Endpoint: Ensure harddisk is not already ready
 app.put('/api/harddisks/:id/ready', async (req, res, next) => {
   try {
     const harddisk = await Harddisk.findByRFID(req.params.id);
     if (!harddisk) {
       return res.status(404).json({ error: 'Harddisk not found' });
+    }
+    if (harddisk.ready_for_rental) {
+      return res.status(400).json({ error: 'Harddisk already marked as ready' });
     }
     await harddisk.markAsReady();
     res.json(harddisk);
@@ -70,14 +75,41 @@ app.put('/api/harddisks/:id/ready', async (req, res, next) => {
   }
 });
 
+// Update Not-Ready Endpoint: Ensure harddisk is currently ready
 app.put('/api/harddisks/:id/not-ready', async (req, res, next) => {
   try {
     const harddisk = await Harddisk.findByPk(req.params.id);
     if (!harddisk) {
       return res.status(404).json({ error: 'Harddisk not found' });
     }
+    if (!harddisk.ready_for_rental) {
+      return res.status(400).json({ error: 'Harddisk is already not ready' });
+    }
     await harddisk.markAsNotReady();
     res.json(harddisk);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// New endpoint: Get harddisk status including ready, availability, rental association, and return status
+app.get('/api/harddisks/:id/status', async (req, res, next) => {
+  try {
+    const harddisk = await Harddisk.findByRFID(req.params.id);
+    if (!harddisk) {
+      return res.status(404).json({ error: 'Harddisk not found' });
+    }
+    // Find the most recent rental associated with this harddisk
+    const rental = await Rental.findOne({
+      where: { harddisk_id: harddisk.id },
+      order: [['created_at', 'DESC']]
+    });
+    res.json({
+      ready: harddisk.ready_for_rental,       // true if ready, false if not
+      availability: harddisk.availability,      // true if available, false if unavailable
+      rentalAssociated: !!rental && (!rental.returned_at),               // true if there is a rental record
+      returned: rental ? !!rental.returned_at : false // true if rental has been returned
+    });
   } catch (error) {
     next(error);
   }
@@ -184,7 +216,7 @@ app.put('/api/rentals/:id/return', async (req, res, next) => {
     }
     await rental.update({ returned_at: new Date() });
     if (rental.Harddisk) {
-      await rental.Harddisk.update({ availability: true });
+      await rental.Harddisk.update({ availability: true, ready_for_rental: false });
     }
     res.json(rental);
   } catch (error) {
@@ -192,24 +224,23 @@ app.put('/api/rentals/:id/return', async (req, res, next) => {
   }
 });
 
-// Modified: Use harddisk RFID to start a rental with additional validations
+// Update Rental Start Endpoint: Check if harddisk is ready for rental and rental hasn't been returned
 app.put('/api/rentals/:id/start', async (req, res, next) => {
   try {
     const harddisk = await Harddisk.findByRFID(req.params.id);
-    if (!harddisk) {
-      return res.status(404).json({ error: 'Harddisk not found' });
-    }
-    // Find pending rental (not started yet)
+    // Find pending rental that hasn't been started or returned
     const rental = await Rental.findOne({
       where: { 
         harddisk_id: harddisk.id, 
-        rented_at: { [Op.is]: null }
+        rented_at: { [Op.is]: null },
+        returned_at: { [Op.is]: null }
       },
       include: [Harddisk]
     });
     if (!rental) {
-      return res.status(404).json({ error: 'No pending rental found for given harddisk' });
+      return res.status(404).json({ error: 'No pending rental found for given harddisk that has not been returned' });
     }
+    
     // Update rental and mark harddisk unavailable
     await rental.update({ rented_at: new Date() });
     if (rental.harddisk_id) {
@@ -220,6 +251,7 @@ app.put('/api/rentals/:id/start', async (req, res, next) => {
     }
     res.json(rental);
   } catch (error) {
+    console.log(error)
     next(error);
   }
 });
@@ -283,8 +315,32 @@ app.get('/api/harddisks/:rfid', async (req, res, next) => {
   }
 });
 
-
-
+// New endpoint: Add a new rental to an existing movie
+app.post('/api/movies/:movieId/rentals', async (req, res, next) => {
+  try {
+    const { movieId } = req.params;
+    const movie = await Movie.findByPk(movieId);
+    if (!movie) {
+      return res.status(404).json({ error: 'Movie not found' });
+    }
+    // Determine the next rental index for this movie
+    const lastRental = await Rental.findOne({
+      where: { movie_id: movie.id },
+      order: [['movie_index_id', 'DESC']]
+    });
+    const nextIndex = lastRental ? lastRental.movie_index_id + 1 : 1;
+    // Create the new rental
+    const newRental = await Rental.create({
+      movie_id: movie.id,
+      movie_index_id: nextIndex,
+      comments: req.body.comments || null,
+      harddisk_id: req.body.harddisk_id || null
+    });
+    res.status(201).json(newRental);
+  } catch (error) {
+    next(error);
+  }
+});
 
 //----Movies CRUD ---//
 
@@ -354,6 +410,10 @@ app.delete('/api/movies/:id', async (req, res, next) => {
     next(error);
   }
 });
+
+// New Auth Endpoints
+app.post('/api/auth/register', register);
+app.post('/api/auth/login', login);
 
 // Apply error handling middleware
 app.use(errorHandler);
