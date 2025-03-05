@@ -9,6 +9,8 @@ import {
   MenubarItem
 } from "@/components/ui/menubar"
 
+import { signOut } from './auth';
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -47,7 +49,19 @@ export default function RootLayout({
                 <a href = "/rentals"><MenubarTrigger>Rentals</MenubarTrigger></a>
             </MenubarMenu>
             <MenubarMenu>
-                <a href = "/rentals/modify"><MenubarTrigger>Modify Rental</MenubarTrigger></a>
+                <a href = "/edit"><MenubarTrigger>Modify Rental</MenubarTrigger></a>
+            </MenubarMenu>
+            <MenubarMenu>
+                <form
+                  action={async () => {
+                    'use server';
+                    await signOut({ redirectTo: '/' });
+                  }}
+                >
+                  <button className="flex items-center justify-center w-full h-10 px-4 text-sm font-medium text-white bg-red-500 rounded-lg hover:bg-red-600">
+                    <div className="hidden md:block">Sign Out</div>
+                  </button>
+                </form>
             </MenubarMenu>
           </Menubar>
           </div>
