@@ -32,7 +32,7 @@ export const { auth, signIn, signOut } = NextAuth({
         console.log(parsedCredentials);
         if (parsedCredentials.success) {
           //const { username, password } = parsedCredentials.data;
-          const {token, user} = await getUser(parsedCredentials.data);
+          const {user} = await getUser(parsedCredentials.data);
           //console.log(token,user)
           console.log(user)
           if (!user) return null;

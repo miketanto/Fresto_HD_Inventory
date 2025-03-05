@@ -270,7 +270,24 @@ app.get('/api/harddisks', async (req, res, next) => {
 
 app.get('/api/rentals', async (req, res, next) => {
   try {
-    const rentals = await Rental.findAll();
+    const rentals = await Rental.findAll(
+      {
+        where: {
+          ...(req.query.status === 'pending' && { harddisk_id: null }),
+          ...(req.query.status === 'active' && { 
+            harddisk_id: { [Op.not]: null },
+            returned_at: null
+          }),
+          ...(req.query.status === 'returned' && { 
+            returned_at: { [Op.not]: null }
+          })
+        },
+        include: [{
+          model: Harddisk,
+          attributes: ['id', 'rfid_code', 'availability', 'ready_for_rental']
+        }]
+      }
+    );
     res.json(rentals);
   } catch (error) {
     next(error);

@@ -18,17 +18,8 @@ export default function RentalView() {
   const [rentals, setRentals] = useState<any[]>([]);
   const [movies, setMovies] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  //const router = useRouter(); // initialize router
 
-  // const isAuthenticated = useIsAuthenticated()
-  // const user = useAuthUser()
-  // if(!isAuthenticated){
-  //   //router.push("/login")
-  //   //Redirect using windows location
-  //   window.location.href = "/login"
-  // }else{
-  //   console.log(user)
-  // }
+  
   const fetchData = async () => {
     setLoading(true);
     try {

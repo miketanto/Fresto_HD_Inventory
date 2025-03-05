@@ -1,7 +1,6 @@
 "use client"
 
 import Image from "next/image";
-import { Separator } from "@/components/ui/separator"
 import { DataTable } from "../../../components/table/data-table"
 import { useState, useEffect } from 'react';
 //import { columns } from '../../harddisk/components/columns'
@@ -108,25 +107,25 @@ export default function MovieRentalsView() {
               View and manage harddisks for this movie
             </p>
           </div>
-          <div className="flex gap-2">
-            <select 
-              value={status}
-              onChange={(e) => setStatus(e.target.value as 'pending' | 'active' | 'returned')}
-              className="border rounded p-2"
-            >
-              <option value="pending">Pending</option>
-              <option value="active">Active</option>
-              <option value="returned">Returned</option>
-            </select>
-            {/* New Add Rental button */}
-            <button 
-              onClick={handleAddRental} 
-              disabled={loading} 
-              className="bg-blue-500 text-white p-2 rounded"
-            >
-              {loading ? "Adding Rental..." : "Add Rental"}
-            </button>
-          </div>
+        </div>
+        <div className="flex gap-2">
+              <select 
+                value={status}
+                onChange={(e) => setStatus(e.target.value as 'pending' | 'active' | 'returned')}
+                className="border rounded p-2"
+              >
+                <option value="pending">Pending</option>
+                <option value="active">Active</option>
+                <option value="returned">Returned</option>
+              </select>
+              {/* New Add Rental button */}
+              <button 
+                onClick={handleAddRental} 
+                disabled={loading} 
+                className="bg-blue-500 text-white p-2 rounded"
+              >
+                {loading ? "Adding Rental..." : "Add Rental"}
+              </button>
         </div>
         {loading ? (
           <div>Loading...</div>

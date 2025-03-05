@@ -5,8 +5,7 @@ import "./globals.css";
 import {
   Menubar,
   MenubarMenu,
-  MenubarTrigger,
-  MenubarItem
+  MenubarTrigger
 } from "@/components/ui/menubar"
 
 import { signOut } from './auth';
@@ -37,7 +36,21 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
+          
+           
           <div className = "fixed top-10 w-screen flex justify-center h-1/10 ">
+          <div className="fixed top-10 right-4 flex justify-end h-1/10 ">
+            <form
+              action={async () => {
+              'use server';
+              await signOut({ redirectTo: '/' });
+              }}
+              >
+              <button className="z-100 flex items-center justify-center w-full h-10 px-4 text-sm font-medium text-white bg-red-500 rounded-lg hover:bg-red-600">
+              <div className="hidden md:block">Sign Out</div>
+              </button>
+              </form>
+            </div>
           <Menubar>
             <MenubarMenu>
                 <a href = "/movies"><MenubarTrigger>Movies</MenubarTrigger></a>
@@ -52,17 +65,9 @@ export default function RootLayout({
                 <a href = "/edit"><MenubarTrigger>Modify Rental</MenubarTrigger></a>
             </MenubarMenu>
             <MenubarMenu>
-                <form
-                  action={async () => {
-                    'use server';
-                    await signOut({ redirectTo: '/' });
-                  }}
-                >
-                  <button className="flex items-center justify-center w-full h-10 px-4 text-sm font-medium text-white bg-red-500 rounded-lg hover:bg-red-600">
-                    <div className="hidden md:block">Sign Out</div>
-                  </button>
-                </form>
+                <a href = "/dashboard"><MenubarTrigger>Dashboard</MenubarTrigger></a>
             </MenubarMenu>
+                
           </Menubar>
           </div>
           {children}

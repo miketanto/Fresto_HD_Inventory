@@ -42,6 +42,13 @@ export const columns: ColumnDef<Rental>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: "movie_name",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Movie Name" />
+    ),
+    cell: ({ row }) => <div>{row.getValue("movie_name")}</div>,
+  },
+  {
     accessorKey: "harddisk_id",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Harddisk" />
@@ -79,13 +86,6 @@ export const columns: ColumnDef<Rental>[] = [
         </div>
       )
     },
-  },
-  {
-    accessorKey: "movie_name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Movie Name" />
-    ),
-    cell: ({ row }) => <div>{row.getValue("movie_name")}</div>,
   },
   {
     accessorKey: "movie_index_id",
