@@ -336,6 +336,8 @@ app.post('/api/movies/:movieId/rentals', async (req, res, next) => {
       comments: req.body.comments || null,
       harddisk_id: req.body.harddisk_id || null
     });
+    //Add the number of rentals to the movie
+    await movie.increment('rent_total');
     res.status(201).json(newRental);
   } catch (error) {
     next(error);

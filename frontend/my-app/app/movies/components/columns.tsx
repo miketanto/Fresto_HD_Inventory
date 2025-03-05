@@ -7,10 +7,11 @@ import { DataTableColumnHeader } from "../../../components/table/data-table-colu
 
 // Define the Movie type including computed fields.
 interface Movie {
+  id: number
   title: string
   rent_total: number
-  rentedCount: number
-  returnedCount: number
+  rented_count: number
+  returned_count: number
   created_at: string
 }
 
@@ -46,7 +47,7 @@ export const columns: ColumnDef<Movie>[] = [
     ),
     cell: ({ row }) => (
       <a 
-        href={`/movies/${row.original.title}`} // Adjust link as needed
+        href={`/movies/${row.original.id}`} // Adjust link as needed
         className="max-w-[500px] truncate font-medium text-blue-500 hover:underline"
       >
         {row.getValue("title")}
@@ -67,19 +68,19 @@ export const columns: ColumnDef<Movie>[] = [
     enableSorting: true,
   },
   {
-    accessorKey: "rentedCount",
+    accessorKey: "rented_count",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Rented" />
     ),
-    cell: ({ row }) => <div>{row.getValue("rentedCount")}</div>,
+    cell: ({ row }) => <div>{row.getValue("rented_count")}</div>,
     enableSorting: true,
   },
   {
-    accessorKey: "returnedCount",
+    accessorKey: "returned_count",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Returned" />
     ),
-    cell: ({ row }) => <div>{row.getValue("returnedCount")}</div>,
+    cell: ({ row }) => <div>{row.getValue("returned_count")}</div>,
     enableSorting: true,
   },
   {

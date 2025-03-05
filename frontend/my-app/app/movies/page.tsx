@@ -11,6 +11,8 @@ interface Movie {
     title: string
     rent_total: number
     created_at: string
+    rented_count: number
+    returned_count: number
   }
   
   export default function MoviesView() {

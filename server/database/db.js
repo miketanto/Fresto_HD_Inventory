@@ -27,6 +27,17 @@ export const Movie = sequelize.define('Movie', {
   created_at: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
+  },
+  rented_count: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0
+  },
+  returned_count:
+  {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0
   }
 }, {
   tableName: 'movies',
@@ -231,6 +242,30 @@ Rental.beforeUpdate(async (rental) => {
     if (!harddisk.ready_for_rental) {
       throw new Error('Cannot start rental as harddisk is not ready');
     }
+    const movie = await Movie.findByPk(rental.movie_id);
+    if (!movie) {
+      throw new Error('Associated movie not found');
+    }
+    movie.rented_count += 1;
+    await movie.save();
+  }
+});
+
+
+Rental.beforeUpdate(async (rental) => {
+    //If successfully rented, we need to update the rented count of the movie
+  if(rental.changed('returned_at') && rental.returned_at) {
+    //Only can be returned if it is rented
+    const movie = await Movie.findByPk(rental.movie_id);
+    if (!movie) {
+      throw new Error('Associated movie not found');
+    }
+    //Returned count should not be greater than rented count
+    if(movie.returned_count >= movie.rented_count) {
+      throw new Error('Returned count should not be greater than rented count');
+    }
+    movie.returned_count += 1;
+    await movie.save();
   }
 });
 
