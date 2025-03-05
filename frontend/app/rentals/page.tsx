@@ -5,9 +5,32 @@ import { DataTable } from "../../components/table/data-table"
 import { useState, useEffect } from 'react';
 import { columns } from './components/columns'
 import { AddRentalDialog } from "./components/add-rental-dialog";
-// import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated'
-// import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
-//import { useRouter } from "next/navigation"
+
+// Define interfaces for Movie and Rental
+interface Movie {
+  id: number;
+  title: string;
+  // ...additional fields if any...
+}
+
+interface Rental {
+  id: number;
+  movie_id: number;
+  movie_index_id: number;
+  rented_at: string ;
+  returned_at: string ;
+  harddisk_id: number;
+  comments?: string;
+  movie_name?: string;
+  Harddisk?: {
+    id: number;
+    rfid_code: string | null;
+    ready_for_rental: boolean;
+    availability: boolean;
+    created_at: string;
+  };
+  // ...additional fields if any...
+}
 
 interface RentalFormData {
   harddisk_id: number;
@@ -15,29 +38,28 @@ interface RentalFormData {
 }
 
 export default function RentalView() {
-  const [rentals, setRentals] = useState<any[]>([]);
-  const [movies, setMovies] = useState<any[]>([]);
+  const [rentals, setRentals] = useState<Rental[]>([]);
+  const [, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  
   const fetchData = async () => {
     setLoading(true);
     try {
       // Fetch movies first
       const moviesResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/movies`);
-      const moviesData = await moviesResponse.json();
+      const moviesData: Movie[] = await moviesResponse.json();
       setMovies(moviesData);
 
       // Then fetch rentals
       const rentalsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/rentals`);
-      let rentalsData = await rentalsResponse.json();
-      
+      let rentalsData: Rental[] = await rentalsResponse.json();
+
       // Replace movie_id with movie_name using the movies lookup
-      rentalsData = rentalsData.map((rental: any) => {
-        const movie = moviesData.find((m: any) => m.id === rental.movie_id);
+      rentalsData = rentalsData.map((rental: Rental) => {
+        const movie = moviesData.find((m: Movie) => m.id === rental.movie_id);
         return { ...rental, movie_name: movie ? movie.title : 'Unknown' };
       });
-      
+
       setRentals(rentalsData);
     } catch (error) {
       console.error('Error fetching data:', error);

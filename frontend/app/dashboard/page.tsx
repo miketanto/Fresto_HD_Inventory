@@ -6,11 +6,31 @@ import { DataTableColumnHeader } from "../../components/table/data-table-column-
 // Import rental page columns
 import { columns as rentalColumns } from "../rentals/components/columns"
 
+// Add type definitions for Movie and Rental
+interface Movie {
+	id: number;
+	title: string;
+	rented_count: number;
+	returned_count: number;
+	rent_total: number;
+}
+
+interface Rental {
+  id: number;
+  movie_id: number;
+  harddisk_id: number | null;
+  movie_index_id: number;
+  rented_at: string;
+  returned_at: string ;
+  movie_name: string;
+  // ...additional fields if any...
+}
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 export default function DashboardPage() {
-  const [rentals, setRentals] = useState<any[]>([])
-  const [movies, setMovies] = useState<any[]>([])
+  const [rentals, setRentals] = useState<Rental[]>([])
+  const [movies, setMovies] = useState<Movie[]>([])
   const [loading, setLoading] = useState<boolean>(false)
 
   // Fetch rentals and movies same as in rentals page
@@ -19,14 +39,14 @@ export default function DashboardPage() {
     try {
       // Fetch movies first
       const moviesResponse = await fetch(`${API_URL}/api/movies`)
-      const moviesData = await moviesResponse.json()
+      const moviesData: Movie[] = await moviesResponse.json()
       setMovies(moviesData)
       // Then fetch rentals
       const rentalsResponse = await fetch(`${API_URL}/api/rentals`)
-      let rentalsData = await rentalsResponse.json()
+      let rentalsData: Rental[] = await rentalsResponse.json()
       // Map rentals to include movie name from movies lookup
-      rentalsData = rentalsData.map((rental: any) => {
-        const movie = moviesData.find((m: any) => m.id === rental.movie_id)
+      rentalsData = rentalsData.map((rental: Rental) => {
+        const movie = moviesData.find((m: Movie) => m.id === rental.movie_id)
         return { ...rental, movie_name: movie ? movie.title : "Unknown" }
       })
       setRentals(rentalsData)

@@ -122,7 +122,7 @@ export default function HarddisksView() {
         </div>
         <div>
           <AddHarddiskDialog onSubmit={handleAddHarddisk} />
-          <MarkReadyDialog className = "bg-green-200" onSubmit={handleMarkReady}/>
+          <MarkReadyDialog onSubmit={handleMarkReady}/>
         </div>
         <DataTable 
           data={harddisks} 

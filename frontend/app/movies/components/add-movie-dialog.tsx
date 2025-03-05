@@ -13,26 +13,45 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-
 import { useState } from "react"
 
+// Define MovieData interface
+interface Movie {
+  id: number
+  title: string
+  rent_total: number
+  created_at: string
+  rented_count: number
+  returned_count: number
+}
 
 
-export function AddMovieDialog({ onSubmit }: { onSubmit: (movieData:any) => void }) {
-  const [movieData, setMovieData] = useState({
+export function AddMovieDialog({ onSubmit }: { onSubmit: (movieData: Movie) => Promise<void> }) {
+  const [movieData, setMovieData] = useState<Movie>({
+    id: 0,
     title: '',
-    rent_total: ''
-  });
-  const [error, setError] = useState(null);
+    rent_total: 0,
+    created_at: '',
+    rented_count: 0,
+    returned_count: 0
+  })
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
     onSubmit(movieData);
-    setMovieData({ title: '', rent_total: '' });
+    setMovieData({
+      id: 0,
+      title: '',
+      rent_total: 0,
+      created_at: '',
+      rented_count: 0,
+      returned_count: 0
+    });
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setMovieData(prev => ({
       ...prev,
@@ -49,7 +68,7 @@ export function AddMovieDialog({ onSubmit }: { onSubmit: (movieData:any) => void
         <DialogHeader>
           <DialogTitle>Add New Movie</DialogTitle>
           <DialogDescription>
-            Enter the details of the new movie. Click save when you're done.
+            Enter the details of the new movie. Click save when youre done.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>

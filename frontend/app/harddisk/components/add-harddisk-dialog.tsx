@@ -13,39 +13,12 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Checkbox } from "@/components/ui/checkbox"
 import { useState } from "react"
 
-interface HarddiskData {
-  rfid_code: string;
-  ready_for_rental?: boolean;
-  availability?: boolean;
-}
-
-export function MarkReadyDialog({ onSubmit }: { onSubmit: (rfid_code:string) => void }) {
+export function AddHarddiskDialog({ onSubmit }: { onSubmit: (rfid_code:string) => void }) {
   const [harddiskData, setHarddiskData] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
-  const [checked, setChecked] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
-
-
-  const handleCheck = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/harddisks/${harddiskData}/rfid`);
-      const harddisk = await response.json();
-
-      if (response.ok) {
-        if(harddisk.ready_for_rental == false) setChecked(true)
-        else setError("Harddisk is already ready!")
-      } else {
-        console.error('Failed to check harddisk');
-      }
-    } catch (error) {
-      console.error('Error during fetch:', error);
-    }
-  };
-
+ 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,8 +27,10 @@ export function MarkReadyDialog({ onSubmit }: { onSubmit: (rfid_code:string) => 
     setHarddiskData("");
   };
 
+  
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
+    const { value } = e.target;
     setHarddiskData(value);
   };
 
@@ -63,13 +38,13 @@ export function MarkReadyDialog({ onSubmit }: { onSubmit: (rfid_code:string) => 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="bg-green-500 text-white hover:bg-green-600">Mark Harddisk Ready</Button>
+        <Button variant="outline">Add New Harddisk</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Mark Harddisk As Ready</DialogTitle>
+          <DialogTitle>Add New Harddisk</DialogTitle>
           <DialogDescription>
-            Enter the details of the harddisk ready to be added
+            Enter the details of the new harddisk. Click save when youre done.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
@@ -92,10 +67,9 @@ export function MarkReadyDialog({ onSubmit }: { onSubmit: (rfid_code:string) => 
             )}
           </div>
           <DialogFooter>
-            {
-                checked?
-                <DialogClose><Button type = "submit" className="bg-green-500 text-white hover:bg-green-600">Mark Harddisk Ready</Button></DialogClose> : <Button onClick = {handleCheck}>Check Harddisk</Button>
-            }
+            <DialogClose asChild>
+              <Button type="submit">Save Harddisk</Button>
+            </DialogClose>
           </DialogFooter>
         </form>
       </DialogContent>

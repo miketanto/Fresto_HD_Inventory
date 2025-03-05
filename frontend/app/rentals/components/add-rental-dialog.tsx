@@ -70,7 +70,7 @@ export function AddRentalDialog({
         <DialogHeader>
           <DialogTitle>Add New Rental</DialogTitle>
           <DialogDescription>
-            Enter the rental details. Click save when you're done.
+            Enter the rental details. Click save when youre done.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>

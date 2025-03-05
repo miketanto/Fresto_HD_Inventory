@@ -1,11 +1,20 @@
 "use client";
 import { useState } from "react";
 
+// Define interface for HarddiskStatus
+interface HarddiskStatus {
+  ready: boolean;
+  availability: boolean;
+  rentalAssociated: boolean;
+  returned: boolean;
+  // ...additional fields if any...
+}
+
 export default function EditPage() {
-  const [rfid, setRfid] = useState("");
-  const [status, setStatus] = useState<any>(null);
-  const [loading, setLoading] = useState(false);
-  const [actionLoading, setActionLoading] = useState(false);
+  const [rfid, setRfid] = useState<string>("");
+  const [status, setStatus] = useState<HarddiskStatus | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [actionLoading, setActionLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -21,10 +30,14 @@ export default function EditPage() {
         const errorData = await res.json();
         throw new Error(errorData.error || "Harddisk not found");
       }
-      const data = await res.json();
+      const data: HarddiskStatus = await res.json();
       setStatus(data);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred");
+      }
     } finally {
       setLoading(false);
     }
@@ -54,8 +67,12 @@ export default function EditPage() {
       alert(`${action === "markReady" ? "Marked as ready" : action === "startRental" ? "Rental started" : "Rental returned"} successfully`);
       // Refresh the status
       handleCheckStatus({ preventDefault: () => {} } as React.FormEvent);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred");
+      }
     } finally {
       setActionLoading(false);
     }

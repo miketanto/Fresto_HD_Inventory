@@ -50,7 +50,7 @@ export const columns: ColumnDef<Harddisk>[] = [
       return (
         <div className="flex space-x-2">
           <span className="max-w-[500px] truncate font-medium">
-            {rfidCode || "Not Set"}
+            {String(rfidCode) || "Not Set"}
           </span>
         </div>
       )
@@ -64,7 +64,7 @@ export const columns: ColumnDef<Harddisk>[] = [
     cell: ({ row }) => {
       const isReady = row.getValue("ready_for_rental")
       return (
-        <Badge variant={isReady ? "success" : "destructive"}>
+        <Badge variant={isReady ? "default" : "destructive"}>
           {isReady ? "Ready" : "Not Ready"}
         </Badge>
       )
@@ -83,7 +83,7 @@ export const columns: ColumnDef<Harddisk>[] = [
     cell: ({ row }) => {
       const isAvailable = row.getValue("availability")
       return (
-        <Badge variant={isAvailable ? "success" : "destructive"}>
+        <Badge variant={isAvailable ? "default" : "destructive"}>
           {isAvailable ? "Available" : "Not Available"}
         </Badge>
       )
