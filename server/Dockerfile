@@ -1,20 +1,19 @@
-# Use Node.js LTS alpine image
-FROM node:18-alpine
+# Example Dockerfile for the backend
+FROM node:18
 
-# Set working directory
 WORKDIR /app
 
-# Copy package files
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy the entire backend code
+# Copy the rest of the application code (excluding node_modules)
 COPY . .
 
-# Expose port
-EXPOSE 4000
+# Expose the port your app runs on
+EXPOSE 5000
 
-# Start command
+# Start the application
 CMD ["npm", "start"]

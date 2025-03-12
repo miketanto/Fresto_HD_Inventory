@@ -25,7 +25,7 @@ export default function EditPage() {
     setError(null);
     setStatus(null);
     try {
-      const res = await fetch(`${API_URL}/api/harddisks/${rfid}/status`);
+      const res = await fetch(`${API_URL}/harddisks/${rfid}/status`);
       if (!res.ok) {
         const errorData = await res.json();
         throw new Error(errorData.error || "Harddisk not found");
@@ -50,11 +50,11 @@ export default function EditPage() {
     try {
       let endpoint = "";
       if (action === "markReady") {
-        endpoint = `${API_URL}/api/harddisks/${rfid}/ready`;
+        endpoint = `${API_URL}/harddisks/${rfid}/ready`;
       } else if (action === "startRental") {
-        endpoint = `${API_URL}/api/rentals/${rfid}/start`;
+        endpoint = `${API_URL}/rentals/${rfid}/start`;
       } else if (action === "returnRental") {
-        endpoint = `${API_URL}/api/rentals/${rfid}/return`;
+        endpoint = `${API_URL}/rentals/${rfid}/return`;
       }
       const res = await fetch(endpoint, {
         method: "PUT",

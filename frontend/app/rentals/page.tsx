@@ -46,12 +46,12 @@ export default function RentalView() {
     setLoading(true);
     try {
       // Fetch movies first
-      const moviesResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/movies`);
+      const moviesResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/movies`);
       const moviesData: Movie[] = await moviesResponse.json();
       setMovies(moviesData);
 
       // Then fetch rentals
-      const rentalsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/rentals`);
+      const rentalsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/rentals`);
       let rentalsData: Rental[] = await rentalsResponse.json();
 
       // Replace movie_id with movie_name using the movies lookup
@@ -77,7 +77,7 @@ export default function RentalView() {
     setLoading(true);
     const {rental_id, harddisk_id} = rentalData
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/rentals/${rental_id}/assign-harddisk`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/rentals/${rental_id}/assign-harddisk`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

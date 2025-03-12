@@ -24,7 +24,7 @@ export function MarkReadyDialog({ onSubmit }: { onSubmit: (rfid_code:string) => 
   const handleCheck = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/harddisks/${harddiskData}/rfid`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/harddisks/${harddiskData}/rfid`);
       const harddisk = await response.json();
 
       if (response.ok) {

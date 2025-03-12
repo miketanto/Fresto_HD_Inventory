@@ -12,14 +12,15 @@ export async function authenticate(
   try {
     await signIn('credentials', formData);
   } catch (error) {
-    if (error instanceof AuthError) {
-      switch (error.type) {
-        case 'CredentialsSignin':
-          return 'Invalid credentials.';
+    if (error instanceof AuthError){
+      switch (error.type as any) {
+        case "CredentialsSignin":
+        case "CallbackRouteError":
+          return { error: "Invalid credentials!" };
         default:
-          return 'Something went wrong.';
+          return { error: "Something went wrong!" };
       }
-    }
     throw error;
+    }
   }
 }

@@ -6,7 +6,7 @@ import {register, login} from './controllers/authController.js';
 
 export const app = express();
 
-const port = 5000;
+const port = 3001;
 
 // Middleware
 app.use(express.json());
@@ -363,7 +363,7 @@ app.post('/api/movies/:movieId/rentals', async (req, res, next) => {
 
 //----Movies CRUD ---//
 
-// READ ALL - GET /api/movies
+// READ ALL - GET /movies
 app.get('/api/movies', async (req, res, next) => {
   try {
     const movies = await Movie.findAll({
@@ -375,7 +375,7 @@ app.get('/api/movies', async (req, res, next) => {
   }
 });
 
-// READ ONE - GET /api/movies/:id
+// READ ONE - GET /movies/:id
 app.get('/api/movies/:id', async (req, res, next) => {
   try {
     const movie = await Movie.findByPk(req.params.id);
@@ -390,7 +390,7 @@ app.get('/api/movies/:id', async (req, res, next) => {
   }
 });
 
-// UPDATE - PUT /api/movies/:id
+// UPDATE - PUT /movies/:id
 app.put('/api/movies/:id', async (req, res, next) => {
   try {
     const movie = await Movie.findByPk(req.params.id);
@@ -414,7 +414,7 @@ app.put('/api/movies/:id', async (req, res, next) => {
   }
 });
 
-// DELETE - DELETE /api/movies/:id
+// DELETE - DELETE /movies/:id
 app.delete('/api/movies/:id', async (req, res, next) => {
   try {
     const movie = await Movie.findByPk(req.params.id);

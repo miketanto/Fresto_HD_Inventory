@@ -23,7 +23,7 @@ interface Movie {
     const fetchMovies = async () => {
         setLoading(true);
         try {
-          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/movies`);
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/movies`);
           const moviesData = await response.json();
           setMovies(moviesData);
         } catch (error) {
@@ -40,7 +40,7 @@ interface Movie {
     const handleAddMovie = async (movieData: Movie) => {
       setLoading(true);
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/movies`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/movies`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

@@ -38,11 +38,11 @@ export default function DashboardPage() {
     setLoading(true)
     try {
       // Fetch movies first
-      const moviesResponse = await fetch(`${API_URL}/api/movies`)
+      const moviesResponse = await fetch(`${API_URL}/movies`)
       const moviesData: Movie[] = await moviesResponse.json()
       setMovies(moviesData)
       // Then fetch rentals
-      const rentalsResponse = await fetch(`${API_URL}/api/rentals`)
+      const rentalsResponse = await fetch(`${API_URL}/rentals`)
       let rentalsData: Rental[] = await rentalsResponse.json()
       // Map rentals to include movie name from movies lookup
       rentalsData = rentalsData.map((rental: Rental) => {

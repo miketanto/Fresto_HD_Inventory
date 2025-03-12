@@ -65,7 +65,7 @@ export const columns: ColumnDef<Rental>[] = [
               rentalId={row.getValue("id")}
               onSubmit={async (rentalId, harddisk_id, comments) => {
                 const response = await fetch(
-                  `${process.env.NEXT_PUBLIC_API_URL}/api/rentals/${rentalId}/assign-harddisk`,
+                  `${process.env.NEXT_PUBLIC_API_URL}/rentals/${rentalId}/assign-harddisk`,
                   {
                     method: 'PUT',
                     headers: {

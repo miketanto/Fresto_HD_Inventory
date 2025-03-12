@@ -33,11 +33,11 @@ export default function MovieRentalsView() {
     setLoading(true);
     try {
       // Fetch movies first
-      const moviesResponse = await fetch(`${API_URL}/api/movies`);
+      const moviesResponse = await fetch(`${API_URL}/movies`);
       const moviesData: Movie[] = await moviesResponse.json();
       setMovies(moviesData);
 
-      const response = await fetch(`${API_URL}/api/movies/${movieId}/rentals`);
+      const response = await fetch(`${API_URL}/movies/${movieId}/rentals`);
       const rentalsDataRes: Rental[] = await response.json();
       
       // Extract harddisks from rentals
@@ -65,7 +65,7 @@ export default function MovieRentalsView() {
   const handleAddRental = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`${API_URL}/api/movies/${movieId}/rentals`, {
+      const res = await fetch(`${API_URL}/movies/${movieId}/rentals`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({}) // ...additional fields if needed

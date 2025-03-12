@@ -31,8 +31,36 @@ const User = sequelize.define('User', {
     beforeCreate: async (user) => {
       const saltRounds = 10;
       user.password = await bcrypt.hash(user.password, saltRounds);
-    }
+    },
   }
 });
+
+User.afterSync(async () => {
+  try {
+    // Check if the default users already exist
+    const users = await User.findAll();
+    if (users.length === 0) {
+      // Create default users
+      await User.bulkCreate([
+        {
+          username: 'freddy',
+          password: 'fresto1', // Password will be hashed by the beforeCreate hook
+          role: 'admin'
+        },
+        {
+          username: 'tarmo',
+          password: 'gilisampeng', // Password will be hashed by the beforeCreate hook
+          role: 'user'
+        }
+      ]);
+      console.log('Default users created successfully.');
+    } else {
+      console.log('Default users already exist.');
+    }
+  } catch (error) {
+    console.error('Error creating default users:', error);
+  }
+});
+
 
 export default User;

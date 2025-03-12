@@ -23,7 +23,7 @@ export default function HarddisksView() {
   const fetchHarddisks = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/harddisks`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/harddisks`);
       const harddisksData = await response.json();
       setHarddisks(harddisksData);
     } catch (error) {
@@ -41,7 +41,7 @@ export default function HarddisksView() {
   const handleAddHarddisk = async (rfid_code: string) => {
     setLoading(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/harddisks`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/harddisks`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ export default function HarddisksView() {
   const handleMarkReady = async (rfid_code:string) => {
     setLoading(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/harddisks/${rfid_code}/ready`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/harddisks/${rfid_code}/ready`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

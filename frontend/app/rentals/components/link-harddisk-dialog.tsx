@@ -32,7 +32,7 @@ const LinkHarddiskDialog = ({ rentalId, onSubmit }: LinkHarddiskDialogProps) => 
     setError(null);
     
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/harddisks/${rfidCode}/rfid`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/harddisks/${rfidCode}/rfid`);
       const harddisk = await response.json();
 
       if (response.ok) {
