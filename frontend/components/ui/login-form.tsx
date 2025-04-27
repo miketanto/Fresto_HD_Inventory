@@ -3,7 +3,6 @@
 import { Button } from '@/components/ui/button';
 import { useActionState } from '@/hooks/useActionState';
 import { authenticate } from '@/lib/actions';
-import { useSearchParams } from 'next/navigation';
  
 export default function LoginForm() {
   const callbackUrl =  '/edit';

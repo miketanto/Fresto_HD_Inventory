@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { DataTable } from "../../../components/table/data-table"
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { columns } from '../../rentals/components/columns'
 import { Harddisk, Rental } from "../../harddisk/data/schema";
 import { usePathname } from 'next/navigation'
@@ -33,7 +33,7 @@ export default function MovieRentalsView() {
   const [rentalCount, setRentalCount] = useState(1);
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-  const fetchRentals = async () => {
+  const fetchRentals = useCallback(async () => {
     setLoading(true);
     try {
       // Fetch movies first
@@ -64,7 +64,7 @@ export default function MovieRentalsView() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [movieId, API_URL]);
 
   const handleAddRentals = async () => {
     if (!rentalCount || rentalCount <= 0) {
@@ -88,7 +88,11 @@ export default function MovieRentalsView() {
       alert('Rentals added successfully');
       fetchRentals(); // Refresh the list
     } catch (error) {
-      alert(error.message);
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert('An unknown error occurred.');
+      }
       console.error(error);
     } finally {
       setLoading(false);
@@ -137,7 +141,7 @@ export default function MovieRentalsView() {
     if (movieId) {
       fetchRentals();
     }
-  }, [movieId, status]);
+  }, [movieId, status, fetchRentals]);
 
   return (
     <>
