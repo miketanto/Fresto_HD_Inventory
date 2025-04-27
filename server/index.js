@@ -256,6 +256,46 @@ app.put('/api/rentals/:id/start', async (req, res, next) => {
   }
 });
 
+// Batch Start Rentals Endpoint
+app.put('/api/rentals/batch-start', async (req, res, next) => {
+  try {
+    const { rentalIds } = req.body;
+    if (!Array.isArray(rentalIds) || rentalIds.length === 0) {
+      return res.status(400).json({ error: 'Invalid rentalIds. Must be a non-empty array.' });
+    }
+
+    const rentals = await Rental.findAll({
+      where: {
+        id: rentalIds,
+        rented_at: { [Op.is]: null },
+        returned_at: { [Op.is]: null }
+      },
+      include: [Harddisk]
+    });
+
+    const foundRentalIds = rentals.map(rental => rental.id);
+    const notFoundOrInvalidRentals = rentalIds.filter(id => !foundRentalIds.includes(id));
+
+    const updatedRentals = await Promise.all(
+      rentals.map(async (rental) => {
+        await rental.update({ rented_at: new Date() });
+        if (rental.Harddisk) {
+          await rental.Harddisk.update({ availability: false });
+        }
+        return rental;
+      })
+    );
+
+    res.json({ 
+      message: 'Batch process completed.', 
+      updatedRentals, 
+      notFoundOrInvalidRentals 
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 // Additional Utility Endpoints
 app.get('/api/harddisks', async (req, res, next) => {
   try {
@@ -336,30 +376,37 @@ app.get('/api/harddisks/:rfid', async (req, res, next) => {
 app.post('/api/movies/:movieId/rentals', async (req, res, next) => {
   try {
     const { movieId } = req.params;
+    const { count = 1, comments } = req.body; // Default count to 1 if not provided
+
     const movie = await Movie.findByPk(movieId);
     if (!movie) {
       return res.status(404).json({ error: 'Movie not found' });
     }
-    // Determine the next rental index for this movie
+
     const lastRental = await Rental.findOne({
       where: { movie_id: movie.id },
       order: [['movie_index_id', 'DESC']]
     });
     const nextIndex = lastRental ? lastRental.movie_index_id + 1 : 1;
-    // Create the new rental
-    const newRental = await Rental.create({
-      movie_id: movie.id,
-      movie_index_id: nextIndex,
-      comments: req.body.comments || null,
-      harddisk_id: req.body.harddisk_id || null
-    });
-    //Add the number of rentals to the movie
-    await movie.increment('rent_total');
-    res.status(201).json(newRental);
+
+    const newRentals = await Promise.all(
+      Array.from({ length: count }).map((_, index) =>
+        Rental.create({
+          movie_id: movie.id,
+          movie_index_id: nextIndex + index,
+          comments: comments || null
+        })
+      )
+    );
+
+    await movie.increment('rent_total', { by: count });
+
+    res.status(201).json(newRentals);
   } catch (error) {
     next(error);
   }
 });
+
 
 //----Movies CRUD ---//
 
@@ -415,7 +462,7 @@ app.put('/api/movies/:id', async (req, res, next) => {
 });
 
 // DELETE - DELETE /movies/:id
-app.delete('/api/movies/:id', async (req, res, next) => {
+app.delete('/movies/:id', async (req, res, next) => {
   try {
     const movie = await Movie.findByPk(req.params.id);
     

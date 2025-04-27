@@ -5,7 +5,7 @@ import { z } from 'zod';
  
 async function getUser(credentials: { username: string, password: string }) {
     //console.log(credentials)
-    console.log(`${process.env.NEXT_PUBLIC_AUTH_API_URL}`)
+    //console.log(`${process.env.NEXT_PUBLIC_AUTH_API_URL}`)
     const response = await fetch(`${process.env.NEXT_PUBLIC_AUTH_API_URL}/auth/login`, {
         method: "POST",
         headers: {
@@ -30,12 +30,12 @@ export const { auth, signIn, signOut } = NextAuth({
         const parsedCredentials = z
           .object({ username: z.string().min(4), password: z.string().min(4) })
           .safeParse(credentials);
-        console.log(parsedCredentials);
+        //console.log(parsedCredentials);
         if (parsedCredentials.success) {
           //const { username, password } = parsedCredentials.data;
           const {user} = await getUser(parsedCredentials.data);
           //console.log(token,user)
-          console.log("USER:", user)
+         // console.log("USER:", user)
           if (!user) return null;
           return user
         }

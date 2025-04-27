@@ -27,7 +27,7 @@ export const authConfig: NextAuthConfig = {
       //console.log(auth?.user);
       //Make the role == user only have access to /dashboard and /edit
       if (auth?.user.role === 'user') {
-        const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
+        const isOnDashboard = nextUrl.pathname.startsWith('/movies');
         const isOnEdit = nextUrl.pathname.startsWith('/edit');
         if (isOnDashboard || isOnEdit) {
           if (isLoggedIn) return true;

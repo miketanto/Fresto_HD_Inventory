@@ -6,6 +6,8 @@ import { useState, useEffect } from 'react';
 import { columns } from '../../rentals/components/columns'
 import { Harddisk, Rental } from "../../harddisk/data/schema";
 import { usePathname } from 'next/navigation'
+import { Checkbox } from "@/components/ui/checkbox";
+import { ColumnDef } from "@tanstack/react-table"
 
 // Define Movie interface
 interface Movie {
@@ -27,6 +29,8 @@ export default function MovieRentalsView() {
   const [rentals, setRentals] = useState<ExtendedRental[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [status, setStatus] = useState<'pending' | 'active' | 'returned'>('active');
+  const [selectedRentals, setSelectedRentals] = useState<number[]>([]);
+  const [rentalCount, setRentalCount] = useState(1);
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   const fetchRentals = async () => {
@@ -62,31 +66,71 @@ export default function MovieRentalsView() {
     }
   };
 
-  const handleAddRental = async () => {
+  const handleAddRentals = async () => {
+    if (!rentalCount || rentalCount <= 0) {
+      alert('Please enter a valid number of rentals.');
+      return;
+    }
+
     try {
       setLoading(true);
       const res = await fetch(`${API_URL}/movies/${movieId}/rentals`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({}) // ...additional fields if needed
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ count: rentalCount })
       });
+
       if (!res.ok) {
         const errorData = await res.json();
-        throw new Error(errorData.error || "Failed to add rental");
+        throw new Error(errorData.error || 'Failed to add rentals');
       }
-      alert("Rental added successfully");
-      fetchRentals(); // refresh list
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        alert(error.message);
-        console.error(error.message);
-      } else {
-        alert("An unknown error occurred");
-        console.error(error);
-      }
+
+      alert('Rentals added successfully');
+      fetchRentals(); // Refresh the list
+    } catch (error) {
+      alert(error.message);
+      console.error(error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleBatchStart = async () => {
+    if (selectedRentals.length === 0) {
+      alert('Please select at least one rental to start.');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await fetch(`${API_URL}/rentals/batch-start`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ rentalIds: selectedRentals }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        alert(`Batch start completed. Failed rentals: ${result.notFoundOrInvalidRentals.join(', ')}`);
+        fetchRentals(); // Refresh the list
+      } else {
+        alert(`Error: ${result.error || 'Failed to batch start rentals.'}`);
+      }
+    } catch (error) {
+      console.error('Error during batch start:', error);
+      alert('An error occurred while starting rentals.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const toggleSelection = (id: number) => {
+    setSelectedRentals((prev) =>
+      prev.includes(id) ? prev.filter((rentalId) => rentalId !== id) : [...prev, id]
+    );
   };
 
   useEffect(() => {
@@ -132,18 +176,67 @@ export default function MovieRentalsView() {
             <option value="active">Active</option>
             <option value="returned">Returned</option>
           </select>
-          <button 
-            onClick={handleAddRental} 
-            disabled={loading} 
+          <input
+            type="text"
+            value={rentalCount}
+            onChange={(e) => {
+              const value = e.target.value;
+              if (/^\d*$/.test(value)) {
+                setRentalCount(value === '' ? 0 : Number(value));
+              }
+            }}
+            onBlur={() => setRentalCount(rentalCount || 1)}
+            className="border rounded p-2 w-20"
+            placeholder="Count"
+          />
+          <button
+            onClick={handleAddRentals}
+            disabled={loading}
+            className="bg-green-500 text-white p-2 rounded"
+          >
+            {loading ? 'Adding Rentals...' : 'Add Rentals'}
+          </button>
+          <button
+            onClick={handleBatchStart}
+            disabled={loading}
             className="bg-blue-500 text-white p-2 rounded"
           >
-            {loading ? "Adding Rental..." : "Add Rental"}
+            {loading ? 'Processing...' : 'Batch Start Selected'}
           </button>
         </div>
         {loading ? (
           <div>Loading...</div>
         ) : (
-          <DataTable data={rentals} columns={columns} 
+          <DataTable
+            data={rentals}
+            columns={columns.map((column) =>
+              column.id === 'select'
+                ? ({
+                    ...column,
+                    id: 'select', // Explicitly define the id as a string
+                    header: ({ table }: any) => (
+                      <Checkbox
+                        checked={
+                          selectedRentals.length > 0 && selectedRentals.length === rentals.length
+                        }
+                        onCheckedChange={(value) => {
+                          setSelectedRentals(value ? rentals.map((rental) => rental.id) : []);
+                        }}
+                        aria-label="Select all rentals"
+                        className="translate-y-[2px]"
+                      />
+                    ),
+                    cell: ({ row }: { row: { original: ExtendedRental } }) => (
+                      <Checkbox
+                        checked={selectedRentals.includes(row.original.id)}
+                        onCheckedChange={(value) => toggleSelection(row.original.id)}
+                        aria-label="Select rental"
+                        className="translate-y-[2px]"
+                      />
+                    ),
+                  } as ColumnDef<ExtendedRental, unknown>)
+                : column
+            )}
             filterable={{
               input: { columnId: "harddisk_id", placeholder: "Filter by movie name..." },
               facets: [

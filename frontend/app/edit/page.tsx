@@ -108,11 +108,11 @@ export default function EditPage() {
       {status && (
         <div className="flex gap-4">
           {
-            !status.rentalAssociated &&(
-              <p> Associate Rental First!</p>
+            status.ready && !status.rentalAssociated &&(
+              <p> Link Harddisk First!</p>
             )
           }
-          {!status.ready && status.rentalAssociated && (
+          {!status.ready && (
             <button onClick={() => handleAction("markReady")} disabled={actionLoading} className="bg-purple-500 text-white p-2">
               {actionLoading ? "Processing..." : "Mark Ready"}
             </button>

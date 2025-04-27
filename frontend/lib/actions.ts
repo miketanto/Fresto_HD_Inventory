@@ -10,9 +10,12 @@ export async function authenticate(
   formData: FormData,
 ) {
   try {
-    await signIn('credentials', formData);
+    await signIn('credentials', {
+      ...Object.fromEntries(formData),
+      callbackUrl: '/dashboard', // Redirect to /edit after successful login
+    });
   } catch (error) {
-    if (error instanceof AuthError){
+    if (error instanceof AuthError) {
       switch (error.type as any) {
         case "CredentialsSignin":
         case "CallbackRouteError":
@@ -20,7 +23,7 @@ export async function authenticate(
         default:
           return { error: "Something went wrong!" };
       }
-    throw error;
     }
+    throw error;
   }
 }
