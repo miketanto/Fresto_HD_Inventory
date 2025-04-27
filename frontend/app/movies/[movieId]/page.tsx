@@ -214,7 +214,7 @@ export default function MovieRentalsView() {
                 ? ({
                     ...column,
                     id: 'select', // Explicitly define the id as a string
-                    header: ({ table }: any) => (
+                    header: () => (
                       <Checkbox
                         checked={
                           selectedRentals.length > 0 && selectedRentals.length === rentals.length
@@ -229,7 +229,7 @@ export default function MovieRentalsView() {
                     cell: ({ row }: { row: { original: ExtendedRental } }) => (
                       <Checkbox
                         checked={selectedRentals.includes(row.original.id)}
-                        onCheckedChange={(value) => toggleSelection(row.original.id)}
+                        onCheckedChange={() => toggleSelection(row.original.id)}
                         aria-label="Select rental"
                         className="translate-y-[2px]"
                       />
